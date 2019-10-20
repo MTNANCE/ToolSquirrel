@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import no.purplecloud.toolsquirrel.ui.credentials.LoginFragment;
+import no.purplecloud.toolsquirrel.ui.credentials.RegisterFragment;
 
 public class CredentialsActivity extends FragmentActivity {
 
@@ -15,6 +16,10 @@ public class CredentialsActivity extends FragmentActivity {
         setContentView(R.layout.credentials_main);
 
         LoginFragment loginFragment = new LoginFragment();
+        RegisterFragment regFragment = new RegisterFragment();
+
+        loginFragment.setRegFragment(regFragment);
+        regFragment.setLoginFragment(loginFragment);
 
         // Startup login fragment as default fragment
         getSupportFragmentManager()

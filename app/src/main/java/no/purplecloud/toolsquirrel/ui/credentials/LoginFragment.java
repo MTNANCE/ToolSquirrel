@@ -24,6 +24,8 @@ public class LoginFragment extends Fragment implements LoginListener {
     private TextView txtRegister;
     private Button btnLogin;
 
+    private RegisterFragment regFragment;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -71,10 +73,13 @@ public class LoginFragment extends Fragment implements LoginListener {
             return true;
         });
 
-        txtRegister.setOnClickListener(e ->
-                // Redirect client to the registration page
-                Toast.makeText(getContext(), "Registration...", Toast.LENGTH_SHORT).show()
-        );
+        txtRegister.setOnClickListener(e -> {
+            // Redirect client to the registration page
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, regFragment)
+                    .commit();
+        });
     }
 
     @Override
@@ -90,5 +95,9 @@ public class LoginFragment extends Fragment implements LoginListener {
         if (success) {
             // TODO Proceed to next activity
         }
+    }
+
+    public void setRegFragment(RegisterFragment regFragment) {
+        this.regFragment = regFragment;
     }
 }
