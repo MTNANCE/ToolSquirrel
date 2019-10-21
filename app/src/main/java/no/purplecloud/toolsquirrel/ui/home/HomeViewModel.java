@@ -11,12 +11,23 @@ import no.purplecloud.toolsquirrel.domain.Tool;
 
 public class HomeViewModel extends ViewModel {
 
+    // Observable list of tools
     private MutableLiveData<List<Tool>> listOfTools;
+    // Observable selected tool
+    private MutableLiveData<Tool> selectedTool = new MutableLiveData<>();
 
     private List<Tool> listOfDummyTools;
 
     public HomeViewModel() {
         this.listOfDummyTools = new ArrayList<>();
+    }
+
+    public void setSelectedTool(Tool selectedTool) {
+        this.selectedTool.setValue(selectedTool);
+    }
+
+    public MutableLiveData<Tool> getSelectedTool() {
+        return this.selectedTool;
     }
 
     public LiveData<List<Tool>> getTools() {

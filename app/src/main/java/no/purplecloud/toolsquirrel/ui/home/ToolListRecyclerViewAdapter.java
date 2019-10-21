@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -26,6 +28,8 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
 
     private static final String TAG = "ToolListRecyclerViewAdapter";
 
+    private HomeViewModel homeViewModel;
+
     // TODO This is currently a list of dummy tools
     private final List<Tool> listOfDummyTools;
 
@@ -38,6 +42,7 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+        this.homeViewModel = ViewModelProviders.of((FragmentActivity) parent.getContext()).get(HomeViewModel.class);
         return viewHolder;
     }
 
@@ -50,6 +55,7 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
         viewHolder.toolTitle.setText(this.listOfDummyTools.get(position).getToolName());
         viewHolder.toolDesc.setText(this.listOfDummyTools.get(position).getToolDesc());
         viewHolder.toolInfo.setText(this.listOfDummyTools.get(position).getToolLocation());
+        viewHolder.view.setOnClickListener(v -> homeViewModel.setSelectedTool(this.listOfDummyTools.get(position)));
     }
 
     @Override
@@ -62,6 +68,7 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
      */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        View view;
         ImageView image;
         TextView toolTitle;
         TextView toolDesc;
@@ -70,6 +77,7 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.view = itemView;
             this.image = itemView.findViewById(R.id.list_item_image);
             this.toolTitle = itemView.findViewById(R.id.list_item_tool_title);
             this.toolDesc = itemView.findViewById(R.id.list_item_tool_desc);

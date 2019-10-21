@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+
+import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        ViewModelProviders.of(this).get(HomeViewModel.class).getSelectedTool().observe(this, selected ->
+                navController.navigate(R.id.action_nav_home_to_tool_details));
     }
 
     @Override
