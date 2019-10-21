@@ -16,8 +16,12 @@
 
     <string name="username_placeholder">Username</string>
     <string name="password_placeholder">Password</string>
+    <string name="cpassword_placeholder">Confirm Password</string>
+    <string name="email_placeholder">E-mail</string>
     <string name="login_btn">Login</string>
+    <string name="register_btn">Register</string>
     <string name="login_no_account"><u>Don\'t have an account?</u></string>
+    <string name="register_already_has_account"><u>Already have an account?</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
