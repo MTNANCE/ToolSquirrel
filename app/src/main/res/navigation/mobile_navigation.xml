@@ -9,6 +9,18 @@
         android:id="@+id/nav_home"
         android:name="no.purplecloud.toolsquirrel.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_tool_details"
+            app:destination="@id/nav_tool_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_tool_details"
+        android:name="no.purplecloud.toolsquirrel.ui.home.ToolDetailsFragment"
+        android:label="fragment_tool_details"
+        tools:layout="@layout/fragment_tool_details" />
 
 </navigation>
