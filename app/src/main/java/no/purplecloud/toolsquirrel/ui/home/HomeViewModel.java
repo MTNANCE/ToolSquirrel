@@ -4,6 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +43,17 @@ public class HomeViewModel extends ViewModel {
     public LiveData<List<Tool>> getTools() {
         if (this.listOfTools == null) {
             this.listOfTools = new MutableLiveData<>();
-            initDummyData();
+            getAllTools();
         }
         return this.listOfTools;
+    }
+
+    public void getAllTools() {
+        try {
+            HttpResponse<String> response = Unirest.get("http://10.0.2.2:8080/getAllTools").asString();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initDummyData() {
