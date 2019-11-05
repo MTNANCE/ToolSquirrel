@@ -12,6 +12,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_rent_tool">Rent Tool</string>
     <string name="menu_manage_borrowed_tools">My Loans</string>
+    <string name="menu_manage_profile">My Profile</string>
     <!-- Admin menu options -->
     <string name="menu_manage_projects">Manage Projects</string>
     <string name="menu_manage_project_leaders">Manage Project Leaders</string>

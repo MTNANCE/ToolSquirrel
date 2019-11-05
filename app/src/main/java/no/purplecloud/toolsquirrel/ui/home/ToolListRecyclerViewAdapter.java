@@ -30,11 +30,10 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
 
     private HomeViewModel homeViewModel;
 
-    // TODO This is currently a list of dummy tools
-    private final List<Tool> listOfDummyTools;
+    private final List<Tool> listOfTools;
 
     public ToolListRecyclerViewAdapter(List<Tool> listOfTools) {
-        this.listOfDummyTools = listOfTools;
+        this.listOfTools = listOfTools;
     }
 
     @NonNull
@@ -51,16 +50,16 @@ public class ToolListRecyclerViewAdapter extends RecyclerView.Adapter<ToolListRe
         // Is called for every widget that is added (DEBUG purposes
         Log.d(TAG, "onBindViewHolder: called.");
 
-        Picasso.get().load(this.listOfDummyTools.get(position).getToolImage()).into(viewHolder.image);
-        viewHolder.toolTitle.setText(this.listOfDummyTools.get(position).getToolName());
-        viewHolder.toolDesc.setText(this.listOfDummyTools.get(position).getToolDesc());
-        viewHolder.toolInfo.setText(this.listOfDummyTools.get(position).getToolLocation());
-        viewHolder.view.setOnClickListener(v -> homeViewModel.setSelectedTool(this.listOfDummyTools.get(position)));
+        Picasso.get().load(this.listOfTools.get(position).getToolImage()).into(viewHolder.image);
+        viewHolder.toolTitle.setText(this.listOfTools.get(position).getToolName());
+        viewHolder.toolDesc.setText(this.listOfTools.get(position).getToolDesc());
+        viewHolder.toolInfo.setText(this.listOfTools.get(position).getToolLocation());
+        viewHolder.view.setOnClickListener(v -> homeViewModel.setSelectedTool(this.listOfTools.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return this.listOfDummyTools.size();
+        return this.listOfTools.size();
     }
 
     /**

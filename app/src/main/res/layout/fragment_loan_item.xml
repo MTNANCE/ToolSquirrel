@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/loan_item_parent_layout">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="0, 1, 2">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="#12345678"
+                android:padding="3dip"
+
+                android:id="@+id/loan_item_id"/>
+
+            <TextView
+                android:text="Screwdriver x123"
+                android:padding="3dip"
+                android:id="@+id/loan_item_name"/>
+
+            <Button
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:minHeight="20dp"
+                android:text="Extend"
+                android:textSize="12dp"
+                android:backgroundTint="@android:color/holo_blue_bright"
+                android:id="@+id/loan_item_button"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+</RelativeLayout>

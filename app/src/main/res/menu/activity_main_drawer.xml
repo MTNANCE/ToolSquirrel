@@ -15,9 +15,14 @@
             android:title="@string/menu_rent_tool" />
 
         <item
-            android:id="@+id/nav_manage_borrows"
+            android:id="@+id/nav_loans"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_manage_borrowed_tools" />
+
+        <item
+            android:id="@+id/nav_manage_profile"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/menu_manage_profile" />
     </group>
 
     <item android:title="Admin">

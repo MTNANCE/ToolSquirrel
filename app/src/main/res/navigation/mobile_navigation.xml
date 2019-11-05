@@ -29,4 +29,10 @@
         android:label="@string/menu_rent_tool"
         tools:layout="@layout/fragment_rent_tool" />
 
+    <fragment
+        android:id="@+id/nav_loans"
+        android:name="no.purplecloud.toolsquirrel.ui.loans.LoansFragment"
+        android:label="fragment_loans"
+        tools:layout="@layout/fragment_loans" />
+
 </navigation>
