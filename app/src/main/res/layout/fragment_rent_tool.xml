@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="150dp"
+        android:inputType="number"
+        android:hint="Tool id"
+        android:textAlignment="center"
+        android:id="@+id/rent_tool_input"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rent_tool_input"
+        android:layout_marginHorizontal="100dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00BCD4"
+        android:text="Rent Tool"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:height="70dp"
+        android:id="@+id/rent_tool_button"/>
+
+</RelativeLayout>
