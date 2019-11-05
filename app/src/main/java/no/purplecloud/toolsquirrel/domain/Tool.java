@@ -38,18 +38,18 @@ public class Tool {
     }
 
     public Tool(JSONObject jsonObject) throws JSONException {
-        setId(jsonObject.getLong("toolId"));
-        setToolName(jsonObject.getString("toolName"));
-        ///setToolDesc(jsonObject.getString("toolDesc"));
-        setToolLocation(jsonObject.getString("toolLocation"));
+        setId(jsonObject.getLong("id"));
+        setToolName(jsonObject.getString("name"));
+        setToolDesc(jsonObject.getString("description"));
+        setToolLocation(jsonObject.getString("location"));
 
         // Check if there is an image for the tool
-        if (jsonObject.has(jsonObject.getString("toolImage"))) {
-            this.toolImage = jsonObject.getString("toolImage");
+        if (jsonObject.has("image")) {
+            this.toolImage = jsonObject.getString("image");
         }
 
         // Check if the tool is loaned by a user or not
-        // TODO double check the string. if the API returns user, loaner or whatever
+        // TODO double check the string. if the APjsonObject.getString(I returns user, loaner or whatever
         if (jsonObject.has("loaner")) {
             // TODO Add necessary parameters after changing Employee class
             this.loaner = new Employee();
