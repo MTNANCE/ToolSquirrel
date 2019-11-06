@@ -1,6 +1,7 @@
 package no.purplecloud.toolsquirrel.ui.home;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
 public class HomeViewModel extends AndroidViewModel {
 
@@ -25,12 +27,11 @@ public class HomeViewModel extends AndroidViewModel {
     // Observable selected tool
     private MutableLiveData<Tool> selectedTool = new MutableLiveData<>();
 
-    // TODO Change this to use VolleySingleton later
-    private RequestQueue requestQueue;
+    private Context context;
 
     public HomeViewModel(Application context) {
         super(context);
-        requestQueue = Volley.newRequestQueue(context);
+        this.context = context;
     }
 
     public void setSelectedTool(Tool selectedTool) {
@@ -50,7 +51,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void getAllTools() {
-        String url = "http://10.0.2.2:8080/getAllTools";
+        String url = "http://10.24.90.17:8080/getAllTools";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
             response -> {
                 System.out.println("Response: " + response);
@@ -69,7 +70,7 @@ public class HomeViewModel extends AndroidViewModel {
                 System.out.println("ERROR: " + error);
             }
         );
-        requestQueue.add(jsonArrayRequest);
+        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
     }
 
 }

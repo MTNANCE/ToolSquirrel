@@ -7,13 +7,20 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- MENU -->
+    <!-- Open menu options -->
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_rent_tool">Rent Tool</string>
+    <string name="menu_manage_borrowed_tools">My Loans</string>
+    <string name="menu_manage_profile">My Profile</string>
+    <!-- Admin menu options -->
+    <string name="menu_manage_projects">Manage Projects</string>
+    <string name="menu_manage_project_leaders">Manage Project Leaders</string>
+    <!-- Project leader menu options -->
+    <string name="menu_manage_project_employees">Manage Project Employees</string>
+    <string name="menu_manage_tools">Manage Tools</string>
 
+    <!-- AUTHENTICATION -->
     <string name="username_placeholder">Username</string>
     <string name="password_placeholder">Password</string>
     <string name="cpassword_placeholder">Confirm Password</string>

@@ -23,4 +23,22 @@
         android:label="fragment_tool_details"
         tools:layout="@layout/fragment_tool_details" />
 
+    <fragment
+        android:id="@+id/nav_rent"
+        android:name="no.purplecloud.toolsquirrel.ui.rent.RentFragment"
+        android:label="@string/menu_rent_tool"
+        tools:layout="@layout/fragment_rent_tool" />
+
+    <fragment
+        android:id="@+id/nav_loans"
+        android:name="no.purplecloud.toolsquirrel.ui.loans.LoansFragment"
+        android:label="fragment_loans"
+        tools:layout="@layout/fragment_loans" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="no.purplecloud.toolsquirrel.ui.profile.profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

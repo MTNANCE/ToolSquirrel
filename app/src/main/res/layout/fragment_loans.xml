@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:inputType="number"
+        android:id="@+id/loans_input"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/loans_input"
+        android:paddingHorizontal="20dp"
+        android:stretchColumns="0, 1, 2">
+
+        <TableRow>
+            <TextView
+                android:text="Tool ID"
+                android:padding="3dip"/>
+
+            <TextView
+                android:text="Name"
+                android:padding="3dip"/>
+
+            <TextView
+                android:text="Extend"
+                android:padding="3dip"/>
+        </TableRow>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/loans_input"
+            android:id="@+id/loans_recycler_view"/>
+
+    </TableLayout>
+
+</RelativeLayout>

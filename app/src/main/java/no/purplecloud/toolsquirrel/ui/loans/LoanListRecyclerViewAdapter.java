@@ -1,0 +1,65 @@
+package no.purplecloud.toolsquirrel.ui.loans;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Loan;
+
+public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRecyclerViewAdapter.ViewHolder> {
+
+    private final List<Loan> listOfLoans;
+
+    public LoanListRecyclerViewAdapter(List<Loan> listOfLoans) {
+        this.listOfLoans = listOfLoans;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_loan_item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        viewHolder.toolId.setText("#" + this.listOfLoans.get(position).getToolId());
+        viewHolder.toolName.setText(this.listOfLoans.get(position).getToolName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.listOfLoans.size();
+    }
+
+    /**
+     * Holds each widget/view in memory
+     */
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        View view;
+        TextView toolId;
+        TextView toolName;
+        Button extendBtn;
+
+        public ViewHolder(@NonNull View view) {
+            super(view);
+            this.view = view;
+            this.toolId = view.findViewById(R.id.loan_item_id);
+            this.toolName = view.findViewById(R.id.loan_item_name);
+            this.extendBtn = view.findViewById(R.id.loan_item_button);
+        }
+    }
+}
