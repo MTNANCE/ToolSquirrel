@@ -20,7 +20,7 @@
             android:title="@string/menu_manage_borrowed_tools" />
 
         <item
-            android:id="@+id/nav_manage_profile"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_manage_profile" />
     </group>
