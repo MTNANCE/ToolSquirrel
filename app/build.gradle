@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 repositories {
+    // Add Google repository (Android JetPack)
+    google()
     // Add Maven central as repository
     mavenCentral()
 }
@@ -67,5 +69,8 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:percent:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
+
+    // Security
+    implementation 'androidx.security:security-crypto:1.0.0-alpha02'
 
 }
