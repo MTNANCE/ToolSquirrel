@@ -38,13 +38,13 @@ public class cache_test extends Fragment {
         this.mEditText = root.findViewById(R.id.cache_test_text);
         root.findViewById(R.id.cache_test_save).setOnClickListener(event -> {
             String text = mEditText.getText().toString();
-            CacheSingleton.getInstance(getContext()).saveToCache(text);
+            CacheSingleton.getInstance(getContext()).saveToCache("test1", text);
             mEditText.getText().clear();
             System.out.println("Writing to file...");
         });
 
         root.findViewById(R.id.cache_test_load).setOnClickListener(event -> {
-            mEditText.setText(CacheSingleton.getInstance(getContext()).LoadFromCache());
+            mEditText.setText(CacheSingleton.getInstance(getContext()).loadFromCache("test1"));
         });
 
         return root;
