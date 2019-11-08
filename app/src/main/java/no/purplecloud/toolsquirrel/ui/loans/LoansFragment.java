@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,9 @@ public class LoansFragment extends Fragment {
         // Linear layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        // Divider decoration to set lines between each recycled view
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         this.loansViewModel = ViewModelProviders.of(this.getActivity()).get(LoansViewModel.class);
         this.loansViewModel.getLoans().observe(this, loans ->
                 recyclerView.setAdapter(new LoanListRecyclerViewAdapter(loans)));

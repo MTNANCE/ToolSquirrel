@@ -4,41 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:inputType="number"
-        android:id="@+id/loans_input"/>
+        android:id="@+id/loans_search"/>
 
-    <TableLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/border_bottom"
+        android:id="@+id/loans_border"
+        android:layout_below="@id/loans_search"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/loans_header"
+        android:layout_below="@id/loans_border">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.47"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Title"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.30"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="Due date"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.23"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:text="Renew"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/loans_input"
-        android:paddingHorizontal="20dp"
-        android:stretchColumns="0, 1, 2">
-
-        <TableRow>
-            <TextView
-                android:text="Tool ID"
-                android:padding="3dip"/>
-
-            <TextView
-                android:text="Name"
-                android:padding="3dip"/>
-
-            <TextView
-                android:text="Extend"
-                android:padding="3dip"/>
-        </TableRow>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/loans_input"
-            android:id="@+id/loans_recycler_view"/>
-
-    </TableLayout>
+        android:layout_below="@id/loans_header"
+        android:id="@+id/loans_recycler_view"/>
 
 </RelativeLayout>
