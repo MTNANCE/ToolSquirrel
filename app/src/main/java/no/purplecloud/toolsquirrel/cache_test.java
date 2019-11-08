@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
+
 public class cache_test extends Fragment {
 
     private static final String FILE_NAME = "example.txt";
@@ -36,54 +38,13 @@ public class cache_test extends Fragment {
         this.mEditText = root.findViewById(R.id.cache_test_text);
         root.findViewById(R.id.cache_test_save).setOnClickListener(event -> {
             String text = mEditText.getText().toString();
-            FileOutputStream fileOutputStream = null;
-            try {
-                fileOutputStream = getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-                fileOutputStream.write(text.getBytes());
-
-                mEditText.getText().clear();
-                Toast.makeText(getContext(), "Saved to " + getContext().getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileOutputStream != null) {
-                    try {
-                        fileOutputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            CacheSingleton.getInstance(getContext()).saveToCache(text);
+            mEditText.getText().clear();
+            System.out.println("Writing to file...");
         });
 
         root.findViewById(R.id.cache_test_load).setOnClickListener(event -> {
-            FileInputStream fileInputStream = null;
-            try {
-                fileInputStream = getContext().openFileInput(FILE_NAME);
-                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                String text;
-                while ((text = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(text).append("\n");
-                }
-
-                mEditText.setText(stringBuilder.toString());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            mEditText.setText(CacheSingleton.getInstance(getContext()).LoadFromCache());
         });
 
         return root;
