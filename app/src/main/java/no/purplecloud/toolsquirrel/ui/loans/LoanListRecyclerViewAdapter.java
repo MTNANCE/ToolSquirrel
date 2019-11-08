@@ -35,8 +35,8 @@ public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        viewHolder.toolId.setText("#" + this.listOfLoans.get(position).getToolId());
-        viewHolder.toolName.setText(this.listOfLoans.get(position).getToolName());
+        viewHolder.toolTitle.setText(this.listOfLoans.get(position).getToolName());
+        viewHolder.dueDate.setText(this.listOfLoans.get(position).getDueDate());
     }
 
     @Override
@@ -50,15 +50,15 @@ public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
-        TextView toolId;
-        TextView toolName;
+        TextView toolTitle;
+        TextView dueDate;
         Button extendBtn;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             this.view = view;
-            this.toolId = view.findViewById(R.id.loan_item_id);
-            this.toolName = view.findViewById(R.id.loan_item_name);
+            this.toolTitle = view.findViewById(R.id.loan_item_title);
+            this.dueDate = view.findViewById(R.id.loan_item_due_date);
             this.extendBtn = view.findViewById(R.id.loan_item_button);
         }
     }

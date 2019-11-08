@@ -42,9 +42,9 @@ public class LoansViewModel extends AndroidViewModel {
 
     // TESTING (TODO Remove after implementing method above)
     private void fillWithDummyLoans() {
-        this.dummyLoans.add(new Loan(12345678L, "Test loan space"));
-        this.dummyLoans.add(new Loan(45216487L, "Dummy shit"));
-        this.dummyLoans.add(new Loan(91235484L, "Svær banan"));
+        this.dummyLoans.add(new Loan(12345678L, "Test loan space", "04/11/2019"));
+        this.dummyLoans.add(new Loan(45216487L, "Dummy shit", "15/10/2019"));
+        this.dummyLoans.add(new Loan(91235484L, "Svær banan", "07/11/2019"));
         this.listOfLoans.setValue(this.dummyLoans);
     }
 }

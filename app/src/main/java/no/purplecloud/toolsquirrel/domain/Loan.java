@@ -1,5 +1,7 @@
 package no.purplecloud.toolsquirrel.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,8 @@ public class Loan {
 
     private String toolName;
 
+    private String dueDate;
+
     private Employee loaner;
 
     /** TODO Remove this when done testing
@@ -20,8 +24,9 @@ public class Loan {
      * @param toolId
      * @param toolName
      */
-    public Loan(Long toolId, String toolName) {
+    public Loan(Long toolId, String toolName, String dueDate) {
         this.toolId = toolId;
         this.toolName = toolName;
+        this.dueDate = dueDate;
     }
 }
