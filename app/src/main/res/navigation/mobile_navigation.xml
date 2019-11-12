@@ -65,4 +65,10 @@
         android:label="fragment_project_details"
         tools:layout="@layout/fragment_project_details" />
 
+    <fragment
+        android:id="@+id/nav_new_project"
+        android:name="no.purplecloud.toolsquirrel.ui.project.NewProjectFragment"
+        android:label="fragment_new_project"
+        tools:layout="@layout/fragment_new_project" />
+
 </navigation>

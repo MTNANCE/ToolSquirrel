@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/grad"
+        android:id="@+id/profile_grad"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/profile_grad"
+        android:layout_marginTop="-32dp"
+        android:background="@drawable/border"
+        android:id="@+id/new_project_title">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="9dp"
+            android:text="New Project"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/new_project_title">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Project Name"
+            android:inputType="text"
+            android:id="@+id/new_project_name"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/new_project_name"
+            android:id="@+id/new_project_desc"
+            android:hint="Project Description"
+            android:inputType="text"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/new_project_desc"
+            android:id="@+id/new_project_location"
+            android:hint="Project Location"
+            android:inputType="text"/>
+
+        <Button
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/new_project_location"
+            android:text="Add New Project"
+            android:textColor="#FFF"
+            android:backgroundTint="@color/colorPrimary"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

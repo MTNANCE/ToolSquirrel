@@ -7,10 +7,17 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
 public class ProjectViewModel extends AndroidViewModel {
 
@@ -42,11 +49,48 @@ public class ProjectViewModel extends AndroidViewModel {
         return this.listOfProjects;
     }
 
+    public void searchForProjects(String search) {
+        String url = "http://192.168.1.97:8080/searchProject/" + search;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+                response -> {
+                    System.out.println("Response: " + response);
+                    List<Project> projects = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            projects.add(new Project(response.getJSONObject(i)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    this.listOfProjects.setValue(projects);
+                }, error -> {
+            System.out.println("ERROR: " + error);
+        }
+        );
+        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
+    }
+
     private void getAllProjects() {
-        ArrayList<Project> dummyProjects = new ArrayList<>();
-        dummyProjects.add(new Project(1L, "Scandic Lerkendal", "Nytt hotell med fabulicious utsikt", "https://media-cdn.tripadvisor.com/media/photo-s/06/69/27/47/scandic-lerkendal.jpg"));
-        dummyProjects.add(new Project(2L, "Vixxy Waxxy", "tom for ideer", "https://mondrian.mashable.com/uploads%252Fcard%252Fimage%252F829044%252Ff1a11a98-59ed-46a9-a2df-bf2a6997ee31.jpg%252F950x534__filters%253Aquality%252880%2529.jpg?signature=e4NQ844Xd_xOQoflFnhXVABg_AA=&source=https%3A%2F%2Fblueprint-api-production.s3.amazonaws.com"));
-        this.listOfProjects.setValue(dummyProjects);
+        String url = "http://192.168.1.97:8080/findAllProjects";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    System.out.println("Response: " + response);
+                    List<Project> projects = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            projects.add(new Project(response.getJSONObject(i)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println("Tools: " + projects);
+                    this.listOfProjects.setValue(projects);
+                },
+                error -> {
+                    System.out.println("ERROR: " + error);
+                }
+        );
+        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
     }
 
 }

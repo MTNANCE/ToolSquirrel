@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,10 @@ public class ProjectFragment extends Fragment {
 
     private ProjectViewModel projectViewModel;
 
+    private SearchView searchField;
+
+    private FloatingActionButton fab;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,8 +35,10 @@ public class ProjectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
         // The recycler view
         RecyclerView recyclerView = rootView.findViewById(R.id.projects_recycler_view);
+        // SearchView
+        this.searchField = rootView.findViewById(R.id.projects_search);
         // Floating Action Add Button
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        fab = rootView.findViewById(R.id.fab);
         // Linear layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -41,5 +49,34 @@ public class ProjectFragment extends Fragment {
         this.projectViewModel.getProjects().observe(this, projects ->
                 recyclerView.setAdapter(new ProjectListRecyclerAdapter(projects)));
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        this.searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String search) {
+                System.out.println("Search Input: " + search);
+                if (search.trim().equals("")) {
+                    projectViewModel.getProjects();
+                } else {
+                    projectViewModel.searchForProjects(search);
+                }
+                return true;
+            }
+        });
+        this.fab.setOnClickListener(event -> {
+            // Redirect client to the new project fragment
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, /* New Project Fragment goes here */)
+                    .commit();
+        });
     }
 }
