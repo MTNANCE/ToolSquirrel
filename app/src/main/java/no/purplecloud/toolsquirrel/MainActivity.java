@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
+import no.purplecloud.toolsquirrel.ui.project.ProjectViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        // Set navigation actions
         ViewModelProviders.of(this).get(HomeViewModel.class).getSelectedTool().observe(this, selected ->
                 navController.navigate(R.id.action_nav_home_to_tool_details));
+        ViewModelProviders.of(this).get(ProjectViewModel.class).getSelectedProject().observe(this, selected ->
+                navController.navigate(R.id.action_nav_projects_to_project_details));
     }
 
     @Override

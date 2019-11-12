@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_loans"
-        android:name="no.purplecloud.toolsquirrel.ui.loans.LoansFragment"
+        android:name="no.purplecloud.toolsquirrel.ui.loan.LoansFragment"
         android:label="fragment_loans"
         tools:layout="@layout/fragment_loans" />
 
@@ -46,5 +46,23 @@
         android:name="no.purplecloud.toolsquirrel.cache_test"
         android:label="fragment_cache_test"
         tools:layout="@layout/fragment_cache_test" />
+
+    <fragment
+        android:id="@+id/nav_projects"
+        android:name="no.purplecloud.toolsquirrel.ui.project.ProjectFragment"
+        android:label="fragment_projects"
+        tools:layout="@layout/fragment_projects">
+        <action
+            android:id="@+id/action_nav_projects_to_project_details"
+            app:destination="@id/nav_project_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_project_details"
+        android:name="no.purplecloud.toolsquirrel.ui.project.ProjectDetailsFragment"
+        android:label="fragment_project_details"
+        tools:layout="@layout/fragment_project_details" />
 
 </navigation>

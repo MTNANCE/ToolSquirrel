@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel.ui.loans;
+package no.purplecloud.toolsquirrel.ui.loan;
 
 import android.app.Application;
 import android.content.Context;

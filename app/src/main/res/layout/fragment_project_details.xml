@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_home_black_24dp"
+        android:id="@+id/project_details_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tool name"
+        android:layout_below="@id/project_details_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:id="@+id/project_details_tile"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tool description. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        android:layout_below="@id/project_details_tile"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:textSize="18dp"
+        android:id="@+id/project_details_desc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/project_details_desc">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:backgroundTint="@color/colorPrimaryProfile"
+            android:text="Edit"
+            android:textColor="#FFF"
+            android:id="@+id/project_edit_button"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:backgroundTint="#F00"
+            android:text="Delete"
+            android:textColor="#FFF"
+            android:id="@+id/project_delete_button"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
