@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import no.purplecloud.toolsquirrel.R;
 
 public class ProjectFragment extends Fragment {
@@ -27,6 +29,8 @@ public class ProjectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
         // The recycler view
         RecyclerView recyclerView = rootView.findViewById(R.id.projects_recycler_view);
+        // Floating Action Add Button
+        FloatingActionButton fab = rootView.findViewById(R.id.fab);
         // Linear layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
