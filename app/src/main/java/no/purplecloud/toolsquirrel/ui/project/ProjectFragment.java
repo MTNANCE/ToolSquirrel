@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel.ui.loans;
+package no.purplecloud.toolsquirrel.ui.project;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,24 +15,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import no.purplecloud.toolsquirrel.R;
 
-public class LoansFragment extends Fragment {
+public class ProjectFragment extends Fragment {
 
-    private LoansViewModel loansViewModel;
+    private ProjectViewModel projectViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // The root view where the recycler view is located (loans fragment)
-        View rootView = inflater.inflate(R.layout.fragment_loans, container, false);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        // The root view where the recycler view is located (home fragment)
+        View rootView = inflater.inflate(R.layout.fragment_projects, container, false);
         // The recycler view
-        RecyclerView recyclerView = rootView.findViewById(R.id.loans_recycler_view);
+        RecyclerView recyclerView = rootView.findViewById(R.id.projects_recycler_view);
         // Linear layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         // Divider decoration to set lines between each recycled view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-        this.loansViewModel = ViewModelProviders.of(this.getActivity()).get(LoansViewModel.class);
-        this.loansViewModel.getLoans().observe(this, loans ->
-                recyclerView.setAdapter(new LoanListRecyclerViewAdapter(loans)));
+        this.projectViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectViewModel.class);
+        this.projectViewModel.getProjects().observe(this, projects ->
+                recyclerView.setAdapter(new ProjectListRecyclerAdapter(projects)));
         return rootView;
     }
 }

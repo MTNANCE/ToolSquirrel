@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:id="@+id/project_item_parent_layout">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:srcCompat="@drawable/ic_home_black_24dp"
+        android:id="@+id/project_item_image"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tool Name"
+        android:layout_toRightOf="@id/project_item_image"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/project_item_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem ipsum dolor sit amet,
+        consectetur adipiscing elit."
+        android:layout_toRightOf="@id/project_item_image"
+        android:layout_marginLeft="20dp"
+        android:textSize="14dp"
+        android:layout_below="@id/project_item_title"
+        android:textColor="#111"
+        android:id="@+id/project_item_desc"/>
+
+</RelativeLayout>

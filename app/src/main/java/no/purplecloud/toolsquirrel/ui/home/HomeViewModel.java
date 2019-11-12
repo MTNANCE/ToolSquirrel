@@ -51,7 +51,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void getAllTools() {
-        String url = "http://10.24.90.17:8080/getAllTools";
+        String url = "http://192.168.1.97:8080/getAllTools";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
             response -> {
                 System.out.println("Response: " + response);
