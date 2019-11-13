@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +26,10 @@ public class ProjectDetailsFragment extends Fragment {
     private ImageView image;
     private TextView title;
     private TextView description;
+
+    private Button manageBtn;
+
+    private NavController navController;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +50,17 @@ public class ProjectDetailsFragment extends Fragment {
         this.image = result.findViewById(R.id.project_details_image);
         this.title = result.findViewById(R.id.project_details_tile);
         this.description = result.findViewById(R.id.project_details_desc);
+        this.navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        this.manageBtn = result.findViewById(R.id.project_details_manage_button);
         return result;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        this.manageBtn.setOnClickListener(event -> {
+            // Redirect client to the new project fragment
+            navController.navigate(R.id.action_nav_project_details_to_project_leaders);
+        });
     }
 }

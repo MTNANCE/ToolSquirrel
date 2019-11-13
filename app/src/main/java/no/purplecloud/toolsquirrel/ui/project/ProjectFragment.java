@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,8 @@ public class ProjectFragment extends Fragment {
 
     private FloatingActionButton fab;
 
+    private NavController navController;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class ProjectFragment extends Fragment {
         // SearchView
         this.searchField = rootView.findViewById(R.id.projects_search);
         // Floating Action Add Button
+        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         fab = rootView.findViewById(R.id.fab);
         // Linear layout
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recyclerView.getContext());
@@ -73,10 +77,7 @@ public class ProjectFragment extends Fragment {
         });
         this.fab.setOnClickListener(event -> {
             // Redirect client to the new project fragment
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, /* New Project Fragment goes here */)
-                    .commit();
+            navController.navigate(R.id.action_nav_projects_to_add_new_project);
         });
     }
 }
