@@ -1,5 +1,6 @@
 package no.purplecloud.toolsquirrel.ui.credentials;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,8 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import no.purplecloud.toolsquirrel.APIClient;
+import no.purplecloud.toolsquirrel.MainActivity;
 import no.purplecloud.toolsquirrel.R;
-import no.purplecloud.toolsquirrel.async.LoginTask;
 import no.purplecloud.toolsquirrel.listener.LoginListener;
 
 public class LoginFragment extends Fragment implements LoginListener {
@@ -60,7 +62,7 @@ public class LoginFragment extends Fragment implements LoginListener {
             btnLogin.setEnabled(false);
 
             // Preform login
-            new LoginTask(username, password).setCallback(this).execute();
+            APIClient.getInstance().login(username, password, getContext(), this);
         });
 
         txtPassword.setOnKeyListener((view, keyCode, e) -> {
@@ -93,7 +95,7 @@ public class LoginFragment extends Fragment implements LoginListener {
         }
 
         if (success) {
-            // TODO Proceed to next activity
+            this.startActivity(new Intent(getActivity(), MainActivity.class));
         }
     }
 
