@@ -25,7 +25,7 @@ import no.purplecloud.toolsquirrel.ui.home.ToolListRecyclerViewAdapter;
 
 public class ProjectListRecyclerAdapter extends RecyclerView.Adapter<ProjectListRecyclerAdapter.ViewHolder> {
 
-    private static final String TAG = "ToolListRecyclerViewAdapter";
+    private static final String TAG = "ProjectListRecyclerAdapter";
 
     private ProjectViewModel projectViewModel;
 

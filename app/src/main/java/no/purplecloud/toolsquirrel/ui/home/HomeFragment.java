@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         this.searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                return false;
+                return true;
             }
 
             @Override
