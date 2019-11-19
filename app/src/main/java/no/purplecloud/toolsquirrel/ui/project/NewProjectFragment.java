@@ -70,39 +70,21 @@ public class NewProjectFragment extends Fragment {
     }
 
     public void newProject(String name, String desc, String location) {
-        String url = "http://localhost:8080/addNewProject";
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("name", name);
             jsonObject.put("desc", desc);
             jsonObject.put("location", location);
-            String requestBody = jsonObject.toString();
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                response -> {
-                    this.projectStatus.setText("Project creation success!");
-                    this.projectStatus.setTextColor(Color.parseColor("#1fa139"));
-                }, error -> {
-                    this.projectStatus.setText("Project creation failed.");
-                    this.projectStatus.setTextColor(Color.parseColor("#e01919"));
-                }
-            ) {
-                @Override
-                public String getBodyContentType() {
-                    return String.format("application/json; charset=utf-8");
-                }
-                @Override
-                public byte[] getBody() {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                                requestBody, "utf-8");
-                        return null;
+            VolleySingleton.getInstance(getContext()).postRequest("http://localhost:8080/addNewProject", jsonObject,
+                    response -> {
+                        this.projectStatus.setText("Project creation success!");
+                        this.projectStatus.setTextColor(Color.parseColor("#1fa139"));
+                    }, error -> {
+                        this.projectStatus.setText("Project creation failed.");
+                        this.projectStatus.setTextColor(Color.parseColor("#e01919"));
                     }
-                }
-            };
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+            );
         } catch (JSONException e) {
             e.printStackTrace();
         }

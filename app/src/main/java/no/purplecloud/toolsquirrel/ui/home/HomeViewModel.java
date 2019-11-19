@@ -10,9 +10,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,47 +53,15 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void searchForTools(String search) {
-        String url = "http://192.168.1.97:8080/searchTool/" + search;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
-            response -> {
-                System.out.println("Response: " + response);
-                List<Tool> tools = new ArrayList<>();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        tools.add(new Tool(response.getJSONObject(i)));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                this.listOfTools.setValue(tools);
-            }, error -> {
-                System.out.println("ERROR: " + error);
-            }
-        );
-        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
+        List<Tool> tools = VolleySingleton.getInstance(this.context)
+                .searchPostRequest("http://192.168.1.97:8080/searchTool/", search, "tool");
+        this.listOfTools.setValue(tools);
     }
 
     private void getAllTools() {
-        String url = "http://192.168.1.97:8080/getAllTools";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-            response -> {
-                System.out.println("Response: " + response);
-                List<Tool> tools = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            tools.add(new Tool(response.getJSONObject(i)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    System.out.println("Tools: " + tools);
-                this.listOfTools.setValue(tools);
-            },
-            error -> {
-                System.out.println("ERROR: " + error);
-            }
-        );
-        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
+        List<Tool> tools = VolleySingleton.getInstance(this.context)
+                .getListRequest("http://192.168.1.97:8080/getAllTools", "tool");
+        this.listOfTools.setValue(tools);
     }
 
 }

@@ -87,38 +87,20 @@ public class NewProjectLeaderFragment extends Fragment {
 
         this.submitBtn.setOnClickListener(event -> {
             if (this.selectedEmployee != null && this.selectedProject != null) {
-                String url = "http://localhost:8080/addProjectLeaderToProject";
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("employee_id", this.selectedEmployee);
                     jsonObject.put("project_id", this.selectedProject);
-                    String requestBody = jsonObject.toString();
 
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                        response -> {
-                            this.status.setText("Successfully added new project leader!");
-                            this.status.setTextColor(Color.parseColor("#1fa139"));
-                        }, error -> {
-                            this.status.setText("Failed to add new project leader.");
-                            this.status.setTextColor(Color.parseColor("#e01919"));
-                        }
-                    ) {
-                        @Override
-                        public String getBodyContentType() {
-                            return String.format("application/json; charset=utf-8");
-                        }
-                        @Override
-                        public byte[] getBody() {
-                            try {
-                                return requestBody == null ? null : requestBody.getBytes("utf-8");
-                            } catch (UnsupportedEncodingException uee) {
-                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                                        requestBody, "utf-8");
-                                return null;
+                    VolleySingleton.getInstance(getContext()).postRequest("http://localhost:8080/addProjectLeaderToProject", jsonObject,
+                            response -> {
+                                this.status.setText("Successfully added new project leader!");
+                                this.status.setTextColor(Color.parseColor("#1fa139"));
+                            }, error -> {
+                                this.status.setText("Failed to add new project leader.");
+                                this.status.setTextColor(Color.parseColor("#e01919"));
                             }
-                        }
-                    };
-                    VolleySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+                    );
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
