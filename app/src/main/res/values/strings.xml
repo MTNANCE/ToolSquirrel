@@ -30,6 +30,6 @@
     <string name="login_no_account"><u>Don\'t have an account?</u></string>
     <string name="register_already_has_account"><u>Already have an account?</u></string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="autocomplete_employee">Find employee</string>
+    <string name="autocomplete_project">Find Project</string>
 </resources>

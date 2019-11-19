@@ -56,4 +56,12 @@ public class ProjectLeadersFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        this.fab.setOnClickListener(event -> {
+            // Redirect client to the add new project leader fragment
+            navController.navigate(R.id.action_nav_project_leaders_to_add_new_project_leader);
+        });
+    }
 }

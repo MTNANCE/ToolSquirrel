@@ -86,6 +86,18 @@
         android:id="@+id/nav_project_leaders"
         android:name="no.purplecloud.toolsquirrel.ui.projectLeaders.ProjectLeadersFragment"
         android:label="fragment_project_leaders"
-        tools:layout="@layout/fragment_project_leaders" />
+        tools:layout="@layout/fragment_project_leaders">
+        <action
+            android:id="@+id/action_nav_project_leaders_to_add_new_project_leader"
+            app:destination="@id/nav_add_project_leader"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_project_leader"
+        android:name="no.purplecloud.toolsquirrel.ui.projectLeaders.NewProjectLeaderFragment"
+        android:label="fragment_add_project_leader"
+        tools:layout="@layout/fragment_add_project_leader" />
 
 </navigation>
