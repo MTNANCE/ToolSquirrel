@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
+import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 import no.purplecloud.toolsquirrel.ui.project.ProjectViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_rent, R.id.nav_loans, R.id.nav_profile, R.id.nav_cache,
-                R.id.nav_projects)
+                R.id.nav_home, R.id.nav_rent, R.id.nav_loans, R.id.nav_profile,
+                R.id.nav_projects, R.id.nav_manage_project_employees, R.id.nav_manage_tools)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.action_nav_home_to_tool_details));
         ViewModelProviders.of(this).get(ProjectViewModel.class).getSelectedProject().observe(this, selected ->
                 navController.navigate(R.id.action_nav_projects_to_project_details));
+        ViewModelProviders.of(this).get(ManageEmployeesViewModel.class).getSelectedEmployee().observe(this, selected ->
+                navController.navigate(R.id.action_nav_manage_project_employees_to_employee_details));
     }
 
     @Override
