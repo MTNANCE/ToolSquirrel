@@ -223,12 +223,12 @@
                     android:textSize="13sp"
                     android:text="Current Project"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="This should be a spinner (dropdown)"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:id="@+id/profile_spinner"/>
 
                 <View
                     android:layout_width="match_parent"
