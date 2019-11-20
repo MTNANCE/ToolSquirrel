@@ -48,7 +48,11 @@ public class ProjectListRecyclerAdapter extends RecyclerView.Adapter<ProjectList
     public void onBindViewHolder(@NonNull ProjectListRecyclerAdapter.ViewHolder viewHolder, int position) {
         // Is called for every widget that is added (DEBUG purposes
         Log.d(TAG, "onBindViewHolder: called.");
-        Picasso.get().load(this.listOfProjects.get(position).getProjectImage()).into(viewHolder.image);
+        if (!this.listOfProjects.get(position).getProjectImage().trim().equals("")) {
+            Picasso.get().load(this.listOfProjects.get(position).getProjectImage()).into(viewHolder.image);
+        } else {
+            Picasso.get().load("https://pixselo.com/wp-content/uploads/2018/03/dummy-placeholder-image-400x400.jpg").into(viewHolder.image);
+        }
         viewHolder.projectTitle.setText(this.listOfProjects.get(position).getProjectName());
         viewHolder.projectDesc.setText(this.listOfProjects.get(position).getProjectDescription());
         viewHolder.view.setOnClickListener(v -> projectViewModel.setSelectedProject(this.listOfProjects.get(position)));

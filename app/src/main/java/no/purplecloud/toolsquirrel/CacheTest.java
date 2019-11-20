@@ -23,7 +23,7 @@ import java.io.InputStreamReader;
 
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
-public class cache_test extends Fragment {
+public class CacheTest extends Fragment {
 
     private static final String FILE_NAME = "example.txt";
 

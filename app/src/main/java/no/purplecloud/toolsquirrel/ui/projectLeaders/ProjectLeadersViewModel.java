@@ -16,8 +16,10 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
 public class ProjectLeadersViewModel extends AndroidViewModel {
@@ -44,27 +46,8 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
     }
 
     public void getAllProjectLeaders() {
-        String url = "http://192.168.1.97:8080/findProjectLeaders/" + this.selectedProject;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
-            response -> {
-                List<Employee> projectLeaders = new ArrayList<>();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        projectLeaders.add(new Employee(response.getJSONObject(i)));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                this.listOfProjectLeaders.setValue(projectLeaders);
-            }, error -> {
-                System.out.println("ERROR: " + error);
-                // TODO Create dummy data for now
-                ArrayList<Employee> dummy = new ArrayList<>();
-                dummy.add(new Employee(1L, "Trygve Danielsen", "tepådo123", "trygve@danielsen.com", 46879452, "https://i1.rgstatic.net/ii/profile.image/272746844258324-1442039323690_Q512/Trygve_Sigholt.jpg", new ArrayList<>(), new ArrayList<>(), "Manager"));
-                this.listOfProjectLeaders.setValue(dummy);
-            }
-        );
-        VolleySingleton.getInstance(this.context).addToRequestQueue(jsonArrayRequest);
+        VolleySingleton.getInstance(this.context)
+                .searchPostRequest(Endpoints.URL + "/findProjectLeaders/", String.valueOf(this.selectedProject), "employee", listOfProjectLeaders::setValue);
     }
 
     public void setSelectedProject(Long selectedProject) {
