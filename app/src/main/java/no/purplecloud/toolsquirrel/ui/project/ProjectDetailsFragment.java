@@ -37,6 +37,7 @@ public class ProjectDetailsFragment extends Fragment {
         ProjectViewModel projectViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectViewModel.class);
         projectViewModel.getSelectedProject().observe(this, project -> {
             Picasso.get().load(project.getProjectImage()).into(this.image);
+            // Set activity header
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(project.getProjectName());
             this.title.setText(project.getProjectName());
             this.description.setText(project.getProjectDescription());

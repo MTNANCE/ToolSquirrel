@@ -20,6 +20,14 @@
     <string name="menu_manage_project_employees">Manage Project Employees</string>
     <string name="menu_manage_tools">Manage Tools</string>
 
+    <!-- Fragment title -->
+    <string name="project_details">Project Details</string>
+    <string name="add_new_project">Add new Project</string>
+    <string name="employee_details">Employee Details</string>
+    <string name="add_new_leader">Add Project Leader</string>
+    <string name="add_employee_to_project">Add Employee To Project</string>
+    <string name="add_new_tool">Add New Tool</string>
+
     <!-- AUTHENTICATION -->
     <string name="username_placeholder">Username</string>
     <string name="password_placeholder">Password</string>
@@ -32,4 +40,7 @@
 
     <string name="autocomplete_employee">Find employee</string>
     <string name="autocomplete_project">Find Project</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

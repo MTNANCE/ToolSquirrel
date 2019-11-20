@@ -7,6 +7,7 @@ public class Endpoints {
             "https://toolsquirrel.tk:8443/register";
     public static final String RANDOM_IMAGE =
             "https://source.unsplash.com/random";
+    public static final String URL = "https://toolsquirrel.tk:8443";
 
     // Prevent initialization of class
     private Endpoints() {}
