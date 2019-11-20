@@ -36,7 +36,12 @@ public class ProjectDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ProjectViewModel projectViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectViewModel.class);
         projectViewModel.getSelectedProject().observe(this, project -> {
-            Picasso.get().load(project.getProjectImage()).into(this.image);
+            if (!project.getProjectImage().trim().equals("")) {
+                Picasso.get().load(project.getProjectImage()).into(this.image);
+            } else {
+                Picasso.get().load("https://pixselo.com/wp-content/uploads/2018/03/dummy-placeholder-image-400x400.jpg").into(this.image);
+            }
+
             // Set activity header
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(project.getProjectName());
             this.title.setText(project.getProjectName());

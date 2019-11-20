@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
@@ -76,7 +77,7 @@ public class NewProjectFragment extends Fragment {
             jsonObject.put("desc", desc);
             jsonObject.put("location", location);
 
-            VolleySingleton.getInstance(getContext()).postRequest("http://localhost:8080/addNewProject", jsonObject,
+            VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/addNewProject", jsonObject,
                     response -> {
                         this.projectStatus.setText("Project creation success!");
                         this.projectStatus.setTextColor(Color.parseColor("#1fa139"));

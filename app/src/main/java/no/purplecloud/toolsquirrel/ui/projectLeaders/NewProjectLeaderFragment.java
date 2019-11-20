@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
@@ -92,7 +93,7 @@ public class NewProjectLeaderFragment extends Fragment {
                     jsonObject.put("employee_id", this.selectedEmployee);
                     jsonObject.put("project_id", this.selectedProject);
 
-                    VolleySingleton.getInstance(getContext()).postRequest("http://localhost:8080/addProjectLeaderToProject", jsonObject,
+                    VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/addProjectLeaderToProject", jsonObject,
                             response -> {
                                 this.status.setText("Successfully added new project leader!");
                                 this.status.setTextColor(Color.parseColor("#1fa139"));

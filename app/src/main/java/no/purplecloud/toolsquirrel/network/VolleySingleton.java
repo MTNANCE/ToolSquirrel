@@ -19,6 +19,7 @@ import java.util.List;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.listener.CallbackListener;
 import no.purplecloud.toolsquirrel.listener.ResponseListener;
 import no.purplecloud.toolsquirrel.listener.VolleyErrorListener;
 
@@ -84,10 +85,10 @@ public class VolleySingleton {
         addToRequestQueue(stringRequest);
     }
 
-    public <T> List<T> searchPostRequest(String url, String search, String type) {
+    public <T> void searchPostRequest(String url, String search, String type, CallbackListener l) {
         String requestUrl = url + search;
         List<T> list = new ArrayList<>();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, requestUrl, null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, requestUrl, null,
                 response -> {
                     for (int i = 0; i < response.length(); i++) {
                         try {
@@ -109,41 +110,44 @@ public class VolleySingleton {
                             e.printStackTrace();
                         }
                     }
-                },
-                System.out::println
-        );
-        addToRequestQueue(jsonArrayRequest);
-        return list;
-    }
-
-    public <T> List<T> getListRequest(String url, String type) {
-        List<T> list = new ArrayList<>();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            // TODO MAKE THIS WORK
-                            switch (type) {
-                                case "tool":
-                                    list.add((T) new Tool(response.getJSONObject(i)));
-                                    break;
-
-                                case "project":
-                                    list.add((T) new Project(response.getJSONObject(i)));
-                                    break;
-
-                                case "employee":
-                                    list.add((T) new Employee(response.getJSONObject(i)));
-                                    break;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    l.onCallback(list);
                 }, System.out::println
         );
         addToRequestQueue(jsonArrayRequest);
-        return list;
+    }
+
+    public <T> void getListRequest(String url, String type, CallbackListener l) {
+        List<T> list = new ArrayList<>();
+        System.out.println("INSIDE GET LIST REQUEST");
+        System.out.println("TYPE: " + type);
+        System.out.println("URL: " + url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    System.out.println("SUCCESSFULLY GOT A RESPONSE!");
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            // TODO MAKE THIS WORK
+                            switch (type) {
+                                case "tool":
+                                    list.add((T) new Tool(response.getJSONObject(i)));
+                                    break;
+
+                                case "project":
+                                    list.add((T) new Project(response.getJSONObject(i)));
+                                    break;
+
+                                case "employee":
+                                    list.add((T) new Employee(response.getJSONObject(i)));
+                                    break;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    l.onCallback(list);
+                }, System.out::println
+        );
+        addToRequestQueue(jsonArrayRequest);
     }
 
 }

@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
@@ -53,15 +54,14 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void searchForTools(String search) {
-        List<Tool> tools = VolleySingleton.getInstance(this.context)
-                .searchPostRequest("http://192.168.1.97:8080/searchTool/", search, "tool");
-        this.listOfTools.setValue(tools);
+        VolleySingleton.getInstance(this.context)
+                .searchPostRequest(Endpoints.URL + "/searchTool/", search, "tool", listOfTools::setValue);
+
     }
 
     private void getAllTools() {
-        List<Tool> tools = VolleySingleton.getInstance(this.context)
-                .getListRequest("http://192.168.1.97:8080/getAllTools", "tool");
-        this.listOfTools.setValue(tools);
+        VolleySingleton.getInstance(this.context)
+                .getListRequest(Endpoints.URL + "/getAllTools", "tool", listOfTools::setValue);
     }
 
 }

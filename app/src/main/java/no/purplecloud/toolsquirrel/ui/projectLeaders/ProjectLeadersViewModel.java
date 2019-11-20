@@ -16,6 +16,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
@@ -45,9 +46,8 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
     }
 
     public void getAllProjectLeaders() {
-        List<Employee> leaders = VolleySingleton.getInstance(this.context)
-                .searchPostRequest("http://192.168.1.97:8080/findProjectLeaders/", String.valueOf(this.selectedProject), "employee");
-        this.listOfProjectLeaders.setValue(leaders);
+        VolleySingleton.getInstance(this.context)
+                .searchPostRequest(Endpoints.URL + "/findProjectLeaders/", String.valueOf(this.selectedProject), "employee", listOfProjectLeaders::setValue);
     }
 
     public void setSelectedProject(Long selectedProject) {

@@ -15,6 +15,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
@@ -50,15 +51,13 @@ public class ProjectViewModel extends AndroidViewModel {
     }
 
     public void searchForProjects(String search) {
-        List<Project> projects = VolleySingleton.getInstance(this.context)
-                .searchPostRequest("http://192.168.1.97:8080/searchProject/", search, "project");
-        this.listOfProjects.setValue(projects);
+        VolleySingleton.getInstance(this.context)
+                .searchPostRequest(Endpoints.URL + "/searchProject/", search, "project", listOfProjects::setValue);
     }
 
     private void getAllProjects() {
-        List<Project> projects = VolleySingleton.getInstance(this.context)
-                .getListRequest("http://192.168.1.97:8080/findAllProjects", "project");
-        this.listOfProjects.setValue(projects);
+        VolleySingleton.getInstance(this.context)
+                .getListRequest(Endpoints.URL + "/findAllProjects", "project", listOfProjects::setValue);
     }
 
 }
