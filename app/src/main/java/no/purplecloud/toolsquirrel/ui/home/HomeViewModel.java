@@ -7,16 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.Endpoints;
@@ -62,6 +52,11 @@ public class HomeViewModel extends AndroidViewModel {
     private void getAllTools() {
         VolleySingleton.getInstance(this.context)
                 .getListRequest(Endpoints.URL + "/getAllTools", "tool", listOfTools::setValue);
+    }
+
+    private void getAllUniqueTools() {
+        VolleySingleton.getInstance(this.context)
+                .getListRequest(Endpoints.URL + "/getAllUniqueTools", "tool", listOfTools::setValue);
     }
 
 }

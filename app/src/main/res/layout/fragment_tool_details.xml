@@ -45,6 +45,7 @@
         android:id="@+id/tool_details_availability"/>
 
     <TableLayout
+        android:id="@+id/tool_availability_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tool_details_availability"
@@ -52,44 +53,49 @@
         android:stretchColumns="0, 1, 2">
 
         <TableRow>
-            <TextView
-                android:text="ID"
-                android:padding="3dip"/>
 
             <TextView
-                android:text="Status"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="ID" />
 
             <TextView
-                android:text="Location"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="Status" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="Location" />
         </TableRow>
+
         <TableRow>
-            <TextView
-                android:text="#12345678"
-                android:padding="3dip"/>
 
             <TextView
-                android:text="Available"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="#12345678" />
 
             <TextView
-                android:text="A300 (Blå)"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="Available" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="A300 (Blå)" />
 
         </TableRow>
+
         <TableRow>
-            <TextView
-                android:text="#38193028"
-                android:padding="3dip"/>
 
             <TextView
-                android:text="Loaned"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="#38193028" />
 
             <TextView
-                android:text="A300 (Blå)"
-                android:padding="3dip"/>
+                android:padding="3dip"
+                android:text="Loaned" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="A300 (Blå)" />
 
         </TableRow>
 
