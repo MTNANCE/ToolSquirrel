@@ -28,6 +28,20 @@ public class LoginFragment extends Fragment implements LoginListener {
 
     private RegisterFragment regFragment;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // We use this function so it doesn't create the view before checking if client already
+        // is logged in. This prevents the "show view" animation then it switches to the main one if
+        // it's not done like this
+
+        // Check if token is valid, then auto login
+        if (APIClient.getInstance().isLoggedIn(getContext())) {
+            onLogin(true, "Already logged in!");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,6 +77,7 @@ public class LoginFragment extends Fragment implements LoginListener {
 
             // Preform login
             APIClient.getInstance().login(username, password, getContext(), this);
+
         });
 
         txtPassword.setOnKeyListener((view, keyCode, e) -> {
@@ -84,6 +99,12 @@ public class LoginFragment extends Fragment implements LoginListener {
         });
     }
 
+
+
+    public void setRegFragment(RegisterFragment regFragment) {
+        this.regFragment = regFragment;
+    }
+
     @Override
     public void onLogin(boolean success, String msg) {
         if (getActivity() != null) {
@@ -97,9 +118,5 @@ public class LoginFragment extends Fragment implements LoginListener {
         if (success) {
             this.startActivity(new Intent(getActivity(), MainActivity.class));
         }
-    }
-
-    public void setRegFragment(RegisterFragment regFragment) {
-        this.regFragment = regFragment;
     }
 }

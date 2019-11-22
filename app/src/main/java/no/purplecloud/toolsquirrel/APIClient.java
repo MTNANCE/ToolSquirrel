@@ -7,12 +7,15 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.auth0.android.jwt.DecodeException;
+import com.auth0.android.jwt.JWT;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.listener.LoginListener;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
@@ -29,6 +32,7 @@ public class APIClient {
     }
 
     private String token;
+    private Employee client;
 
     public void login(String username, String password, Context context, LoginListener l) {
         try {
@@ -54,8 +58,8 @@ public class APIClient {
 
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    APIClient.getInstance().setToken(response.headers.get("Authorization"));
-                    CacheSingleton.getInstance(context).saveToCache("token", token);
+                    CacheSingleton.getInstance(context).saveToCache("token",
+                            response.headers.get("Authorization").split(" ")[1]);
                     l.onLogin(true, "Logged in!");
                     return super.parseNetworkResponse(response);
                 }
@@ -68,18 +72,34 @@ public class APIClient {
         }
     }
 
-    public boolean isLoggedIn() {
-        boolean loggedIn = false;
-
-        if (token != null) {
-            //TODO Check token expiration date
-            loggedIn = true;
-        }
-
-        return loggedIn;
+    public boolean isLoggedIn(Context context) {
+        return tokenIsValid(token, context);
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public boolean tokenIsValid(String token, Context context) {
+        boolean isValid = false;
+        token = CacheSingleton.getInstance(context).loadFromCache("token");
+
+        if (token != null) {
+            if (!tokenHasExpired(token, context)) {
+                isValid = true;
+                client = new JWT(token).getClaim("employee").asObject(Employee.class);
+            }
+        }
+
+        return isValid;
+    }
+
+    public boolean tokenHasExpired(String token, Context context) {
+        System.out.println(token);
+        JWT jwt = null;
+
+        try {
+            jwt = new JWT(token);
+        } catch (DecodeException de) {
+            return true;
+        }
+
+        return jwt.isExpired(0);
     }
 }
