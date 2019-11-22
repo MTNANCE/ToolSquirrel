@@ -49,6 +49,9 @@ dependencies {
 
     // Added dependencies
 
+    // JWT Decoder
+    implementation 'com.auth0.android:jwtdecode:1.4.0'
+
     // https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java
     implementation group: 'com.mashape.unirest', name: 'unirest-java', version: '1.3.1'
 
