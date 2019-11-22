@@ -38,7 +38,7 @@ public class HomeViewModel extends AndroidViewModel {
     public LiveData<List<Tool>> getTools() {
         if (this.listOfTools == null) {
             this.listOfTools = new MutableLiveData<>();
-            getAllTools();
+            getAllUniqueTools();
         }
         return this.listOfTools;
     }
