@@ -23,7 +23,8 @@ import java.security.GeneralSecurityException;
 public class CacheSingleton {
 
     // Name of the file
-    private static final String FILE_NAME = "battery_fresh.txt";
+    private final String fileName = "battery_fresh.txt";
+    private final String cacheFileName = "cache_file.txt";
 
     // Singleton Instance
     private static CacheSingleton instance;
@@ -41,10 +42,65 @@ public class CacheSingleton {
         return instance;
     }
 
+    /*------------------------------
+    Cache storage
+    ----------------------------*/
+
     public void saveToCache(String key, String textToSave) {
         FileOutputStream fileOutputStream = null;
         try {
-            JSONObject jsonObject = getFileContentAsJSON();
+            File cacheFile = new File(context.getCacheDir(), cacheFileName);
+            if (!cacheFile.exists()) {
+                cacheFile = new File(context.getCacheDir(), cacheFileName);
+            }
+            fileOutputStream = new FileOutputStream(cacheFile);
+            // Get current data as JSON
+            JSONObject data = getFileContentAsJSON(cacheFileName);
+            if (data.has(key)) {
+                data.remove(key);
+            }
+            data.put(key, textToSave);
+            fileOutputStream.write(String.valueOf(data).getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public String loadFromCache(String key) {
+        String response = "";
+        try {
+            JSONObject jsonObject = getFileContentAsJSON(cacheFileName);
+            if (jsonObject != null) {
+                if (!jsonObject.has(key)) {
+                    response = "";
+                } else {
+                    response = jsonObject.getString(key);
+                }
+            }
+        } catch (JSONException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    /*------------------------------
+    Data storage
+    ----------------------------*/
+
+    public void saveToData(String key, String textToSave) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            JSONObject jsonObject = getFileContentAsJSON(fileName);
             if (jsonObject != null) {
                 if (jsonObject.has(key)) {
                     jsonObject.remove(key);
@@ -53,7 +109,7 @@ public class CacheSingleton {
                 jsonObject = new JSONObject();
             }
             jsonObject.put(key, textToSave);
-            fileOutputStream = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+            fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             fileOutputStream.write(String.valueOf(jsonObject).getBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -72,13 +128,13 @@ public class CacheSingleton {
         }
     }
 
-    public String loadFromCache(String key) {
+    public String loadFromData(String key) {
         String response = "";
         try {
-            JSONObject jsonObject = getFileContentAsJSON();
+            JSONObject jsonObject = getFileContentAsJSON(fileName);
             if (jsonObject != null) {
                 if (!jsonObject.has(key)) {
-                    response = "Couldn't find anything with that key";
+                    response = "";
                 } else {
                     response = jsonObject.getString(key);
                 }
@@ -89,11 +145,29 @@ public class CacheSingleton {
         return response;
     }
 
-    public JSONObject getFileContentAsJSON() {
+    /*------------------------------
+    Common method
+    ----------------------------*/
+
+    public JSONObject getFileContentAsJSON(String file) {
         FileInputStream fileInputStream = null;
         JSONObject jsonObject = null;
         try {
-            fileInputStream = context.openFileInput(FILE_NAME);
+            switch (file) {
+                case fileName:
+                    File foundFile = new File(context.getDataDir(), fileName);
+                    if (foundFile.exists()) {
+                        fileInputStream = context.openFileInput(fileName);
+                    }
+                    break;
+
+                case cacheFileName:
+                    File cacheFile = new File(context.getCacheDir(), cacheFileName);
+                    if (cacheFile.exists()) {
+                        fileInputStream = new FileInputStream(new File(context.getCacheDir(), cacheFileName));
+                    }
+                    break;
+            }
             if (fileInputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -102,7 +176,11 @@ public class CacheSingleton {
                 while ((text = bufferedReader.readLine()) != null) {
                     stringBuilder.append(text).append("\n");
                 }
-                jsonObject = new JSONObject(stringBuilder.toString());
+                if (stringBuilder.length() == 0) {
+                    jsonObject = new JSONObject();
+                } else {
+                    jsonObject = new JSONObject(stringBuilder.toString());
+                }
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -117,6 +195,8 @@ public class CacheSingleton {
         }
         return jsonObject;
     }
+
+    // TODO If time, create a more secure way
 
     // Secure way
     /*public void saveToCache(String textToSave) {

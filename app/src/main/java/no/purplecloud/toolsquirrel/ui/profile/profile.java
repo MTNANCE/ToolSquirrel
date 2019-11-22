@@ -50,9 +50,11 @@ public class profile extends Fragment {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         this.spinner.setAdapter(adapter);
         // Check if there already is an active project
-        if (!CacheSingleton.getInstance(getContext()).loadFromCache("activeProject").trim().equals("")) {
+        CacheSingleton.getInstance(getContext()).saveToData("test", "test");
+        if (!CacheSingleton.getInstance(getContext()).loadFromData("activeProject").trim().equals("") &&
+                CacheSingleton.getInstance(getContext()).loadFromData("activeProject") != null) {
             try {
-                JSONObject jsonObject = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromCache("activeProject"));
+                JSONObject jsonObject = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromData("activeProject"));
                 this.spinner.setSelection(jsonObject.getInt("position"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -69,7 +71,7 @@ public class profile extends Fragment {
                     jsonObject.put("id", selectedProject.getProjectId());
                     jsonObject.put("name", selectedProject.getProjectName());
                     jsonObject.put("position", position);
-                    CacheSingleton.getInstance(getContext()).saveToCache("activeProject", jsonObject.toString());
+                    CacheSingleton.getInstance(getContext()).saveToData("activeProject", jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
