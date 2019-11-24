@@ -36,10 +36,7 @@ public class LoginFragment extends Fragment implements LoginListener {
         // is logged in. This prevents the "show view" animation then it switches to the main one if
         // it's not done like this
 
-        // Check if token is valid, then auto login
-        if (APIClient.getInstance().isLoggedIn(getContext())) {
-            onLogin(true, "Already logged in!");
-        }
+
     }
 
     @Nullable

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class HomeFragment extends Fragment {
 

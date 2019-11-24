@@ -85,9 +85,9 @@ public class VolleySingleton {
         addToRequestQueue(stringRequest);
     }
 
-    public <T> void searchPostRequest(String url, String search, String type, CallbackListener l) {
+    public void searchPostRequest(String url, String search, String type, CallbackListener l) {
         String requestUrl = url + search;
-        List<T> list = new ArrayList<>();
+        List list = new ArrayList<>();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, requestUrl, null,
                 response -> {
                     for (int i = 0; i < response.length(); i++) {
@@ -95,15 +95,15 @@ public class VolleySingleton {
                             // TODO MAKE THIS WORK
                             switch (type) {
                                 case "tool":
-                                    list.add((T) new Tool(response.getJSONObject(i)));
+                                    list.add(new Tool(response.getJSONObject(i)));
                                     break;
 
                                 case "project":
-                                    list.add((T) new Project(response.getJSONObject(i)));
+                                    list.add(new Project(response.getJSONObject(i)));
                                     break;
 
                                 case "employee":
-                                    list.add((T) new Employee(response.getJSONObject(i)));
+                                    list.add(new Employee(response.getJSONObject(i)));
                                     break;
                             }
                         } catch (JSONException e) {
@@ -116,8 +116,8 @@ public class VolleySingleton {
         addToRequestQueue(jsonArrayRequest);
     }
 
-    public <T> void getListRequest(String url, String type, CallbackListener l) {
-        List<T> list = new ArrayList<>();
+    public void getListRequest(String url, String type, CallbackListener l) {
+        List list = new ArrayList<>();
         System.out.println("INSIDE GET LIST REQUEST");
         System.out.println("TYPE: " + type);
         System.out.println("URL: " + url);
@@ -129,15 +129,15 @@ public class VolleySingleton {
                             // TODO MAKE THIS WORK
                             switch (type) {
                                 case "tool":
-                                    list.add((T) new Tool(response.getJSONObject(i)));
+                                    list.add(new Tool(response.getJSONObject(i)));
                                     break;
 
                                 case "project":
-                                    list.add((T) new Project(response.getJSONObject(i)));
+                                    list.add(new Project(response.getJSONObject(i)));
                                     break;
 
                                 case "employee":
-                                    list.add((T) new Employee(response.getJSONObject(i)));
+                                    list.add(new Employee(response.getJSONObject(i)));
                                     break;
                             }
                         } catch (JSONException e) {

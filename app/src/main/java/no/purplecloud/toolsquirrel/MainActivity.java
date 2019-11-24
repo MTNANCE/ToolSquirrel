@@ -2,12 +2,8 @@ package no.purplecloud.toolsquirrel;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import android.view.View;
 
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -22,9 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import no.purplecloud.toolsquirrel.domain.Employee;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
 import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 import no.purplecloud.toolsquirrel.ui.project.ProjectViewModel;
@@ -38,12 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        // Add dropdown spinner
-        /*Spinner spinner = findViewById(R.layout.nav_header_main);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.projects_array, R.layout.support_simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);*/
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.action_nav_projects_to_project_details));
         ViewModelProviders.of(this).get(ManageEmployeesViewModel.class).getSelectedEmployee().observe(this, selected ->
                 navController.navigate(R.id.action_nav_manage_project_employees_to_employee_details));
+
+        // Get header view
+        View headerView = navigationView.getHeaderView(0);
+        TextView authenticatedUserName = headerView.findViewById(R.id.header_main_name);
+        ImageView authenticatedUserImage = headerView.findViewById(R.id.header_main_image);
+        // Get authenticated user
+        Employee authenticatedUser = CacheSingleton.getInstance(getApplicationContext()).getAuthenticatedUser();
+        // Set the header values
+        authenticatedUserName.setText(authenticatedUser.getName());
+        Picasso.get().load(authenticatedUser.getImage()).into(authenticatedUserImage);
     }
 
     @Override
@@ -81,4 +84,5 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 }

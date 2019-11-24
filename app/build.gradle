@@ -49,6 +49,9 @@ dependencies {
 
     // Added dependencies
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.13'
+
     // JWT Decoder
     implementation 'com.auth0.android:jwtdecode:1.4.0'
 

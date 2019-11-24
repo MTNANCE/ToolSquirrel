@@ -12,7 +12,7 @@
         android:id="@+id/profile_grad">
 
         <RelativeLayout
-            android:id="@+id/profile_image"
+            android:id="@+id/profile_image_border"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -27,14 +27,15 @@
                 android:background="@drawable/circle"
                 android:padding="3dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/user_circle"/>
+                android:src="@drawable/user_circle"
+                android:id="@+id/profile_image"/>
 
         </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profile_image"
+            android:layout_below="@id/profile_image_border"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-light"
             android:layout_marginTop="15dp"
@@ -49,7 +50,7 @@
             android:layout_below="@id/profile_name"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif"
-            android:text="Concrete specialist"
+            android:text="Mangler"
             android:textAllCaps="true"
             android:textColor="@color/address"
             android:textSize="14sp"
@@ -87,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="Romsdal Bygg AS"
+                    android:text="Mangler"
                     android:textSize="18sp"/>
 
                 <View
@@ -116,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="dudleif@rompesaft.com"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:id="@+id/profile_email"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -144,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="+47 945 35 633"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:id="@+id/profile_phone"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -171,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="1345678915754"
+                    android:text="Mangler"
                     android:textSize="18sp"/>
 
                 <View
@@ -199,7 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="3456 1234 9775 1547"
+                    android:text="Mangler"
                     android:textSize="18sp"/>
 
                 <View

@@ -11,7 +11,10 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Loan;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class LoansViewModel extends AndroidViewModel {
 
@@ -19,8 +22,6 @@ public class LoansViewModel extends AndroidViewModel {
     private MutableLiveData<List<Loan>> listOfLoans;
 
     private Context context;
-
-    private ArrayList<Loan> dummyLoans = new ArrayList<>();
 
     public LoansViewModel(@NonNull Application application) {
         super(application);
@@ -30,21 +31,14 @@ public class LoansViewModel extends AndroidViewModel {
     public LiveData<List<Loan>> getLoans() {
         if (this.listOfLoans == null) {
             this.listOfLoans = new MutableLiveData<>();
-            fillWithDummyLoans();
+            getAllLoans();
         }
         return this.listOfLoans;
     }
 
-    //  TODO Implement this method (API call)
     private void getAllLoans() {
-
-    }
-
-    // TESTING (TODO Remove after implementing method above)
-    private void fillWithDummyLoans() {
-        this.dummyLoans.add(new Loan(12345678L, "Test loan space", "04/11/2019"));
-        this.dummyLoans.add(new Loan(45216487L, "Dummy shit", "15/10/2019"));
-        this.dummyLoans.add(new Loan(91235484L, "Svær banan", "07/11/2019"));
-        this.listOfLoans.setValue(this.dummyLoans);
+        Employee employee = CacheSingleton.getInstance(context).getAuthenticatedUser();
+        VolleySingleton.getInstance(context).getListRequest("/findAllBorrows/" + employee.getId(), "tool",
+                list -> this.listOfLoans.setValue(list));
     }
 }

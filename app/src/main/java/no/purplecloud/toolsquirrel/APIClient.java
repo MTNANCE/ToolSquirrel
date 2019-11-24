@@ -58,6 +58,10 @@ public class APIClient {
 
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    Map<String, String> asd = response.headers;
+                    asd.forEach((one, two) ->   {
+                        System.out.println(one + " | " + two);
+                    });
                     CacheSingleton.getInstance(context).saveToCache("token",
                             response.headers.get("Authorization").split(" ")[1]);
                     l.onLogin(true, "Logged in!");
@@ -70,36 +74,5 @@ public class APIClient {
             l.onLogin(false, "Failed to login");
             e.printStackTrace();
         }
-    }
-
-    public boolean isLoggedIn(Context context) {
-        return tokenIsValid(token, context);
-    }
-
-    public boolean tokenIsValid(String token, Context context) {
-        boolean isValid = false;
-        token = CacheSingleton.getInstance(context).loadFromCache("token");
-
-        if (token != null) {
-            if (!tokenHasExpired(token, context)) {
-                isValid = true;
-                client = new JWT(token).getClaim("employee").asObject(Employee.class);
-            }
-        }
-
-        return isValid;
-    }
-
-    public boolean tokenHasExpired(String token, Context context) {
-        System.out.println(token);
-        JWT jwt = null;
-
-        try {
-            jwt = new JWT(token);
-        } catch (DecodeException de) {
-            return true;
-        }
-
-        return jwt.isExpired(0);
     }
 }

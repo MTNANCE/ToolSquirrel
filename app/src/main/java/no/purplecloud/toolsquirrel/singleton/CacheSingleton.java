@@ -1,10 +1,9 @@
 package no.purplecloud.toolsquirrel.singleton;
 
 import android.content.Context;
-import android.security.keystore.KeyGenParameterSpec;
 
-import androidx.security.crypto.EncryptedFile;
-import androidx.security.crypto.MasterKeys;
+import com.auth0.android.jwt.DecodeException;
+import com.auth0.android.jwt.JWT;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,11 +13,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.security.GeneralSecurityException;
+
+import no.purplecloud.toolsquirrel.domain.Employee;
 
 public class CacheSingleton {
 
@@ -194,6 +192,39 @@ public class CacheSingleton {
             }
         }
         return jsonObject;
+    }
+
+    /*------------------------------
+    Token related methods
+    ----------------------------*/
+
+    public boolean tokenIsValid(Context context) {
+        boolean isValid = false;
+        String token = loadFromCache("token");
+
+        if (token != null) {
+            if (!tokenHasExpired(token, context)) {
+                isValid = true;
+                //client = new JWT(token).getClaim("employee").asObject(Employee.class);
+            }
+        }
+
+        return isValid;
+    }
+
+    public boolean tokenHasExpired(String token, Context context) {
+        System.out.println(token);
+        JWT jwt = null;
+        try {
+            jwt = new JWT(token);
+        } catch (DecodeException de) {
+            return true;
+        }
+        return jwt.isExpired(0);
+    }
+
+    public Employee getAuthenticatedUser() {
+        return new JWT(loadFromCache("token")).getClaim("employee").asObject(Employee.class);
     }
 
     // TODO If time, create a more secure way
