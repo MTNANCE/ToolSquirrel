@@ -9,35 +9,136 @@
         android:id="@+id/nav_home"
         android:name="no.purplecloud.toolsquirrel.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_tool_details"
+            app:destination="@id/nav_tool_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="no.purplecloud.toolsquirrel.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_tool_details"
+        android:name="no.purplecloud.toolsquirrel.ui.home.ToolDetailsFragment"
+        android:label="fragment_tool_details"
+        tools:layout="@layout/fragment_tool_details" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="no.purplecloud.toolsquirrel.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_rent"
+        android:name="no.purplecloud.toolsquirrel.ui.rent.RentFragment"
+        android:label="@string/menu_rent_tool"
+        tools:layout="@layout/fragment_rent_tool" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="no.purplecloud.toolsquirrel.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:id="@+id/nav_loans"
+        android:name="no.purplecloud.toolsquirrel.ui.loan.LoansFragment"
+        android:label="@string/menu_manage_borrowed_tools"
+        tools:layout="@layout/fragment_loans" />
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="no.purplecloud.toolsquirrel.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        android:id="@+id/nav_profile"
+        android:name="no.purplecloud.toolsquirrel.ui.profile.profile"
+        android:label="@string/menu_manage_profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_send"
-        android:name="no.purplecloud.toolsquirrel.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        android:id="@+id/nav_projects"
+        android:name="no.purplecloud.toolsquirrel.ui.project.ProjectFragment"
+        android:label="@string/menu_manage_projects"
+        tools:layout="@layout/fragment_projects">
+        <action
+            android:id="@+id/action_nav_projects_to_project_details"
+            app:destination="@id/nav_project_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_nav_projects_to_add_new_project"
+            app:destination="@id/nav_new_project"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_project_details"
+        android:name="no.purplecloud.toolsquirrel.ui.project.ProjectDetailsFragment"
+        android:label="@string/project_details"
+        tools:layout="@layout/fragment_project_details">
+        <action
+            android:id="@+id/action_nav_project_details_to_project_leaders"
+            app:destination="@id/nav_project_leaders"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_project"
+        android:name="no.purplecloud.toolsquirrel.ui.project.NewProjectFragment"
+        android:label="@string/add_new_project"
+        tools:layout="@layout/fragment_new_project" />
+
+    <fragment
+        android:id="@+id/nav_project_leaders"
+        android:name="no.purplecloud.toolsquirrel.ui.projectLeaders.ProjectLeadersFragment"
+        android:label="@string/menu_manage_project_leaders"
+        tools:layout="@layout/fragment_project_leaders">
+        <action
+            android:id="@+id/action_nav_project_leaders_to_add_new_project_leader"
+            app:destination="@id/nav_add_project_leader"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_project_leader"
+        android:name="no.purplecloud.toolsquirrel.ui.projectLeaders.NewProjectLeaderFragment"
+        android:label="@string/add_new_leader"
+        tools:layout="@layout/fragment_add_project_leader" />
+
+    <fragment
+        android:id="@+id/nav_manage_project_employees"
+        android:name="no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesFragment"
+        android:label="@string/menu_manage_project_employees"
+        tools:layout="@layout/fragment_manage_employees">
+        <action
+            android:id="@+id/action_nav_manage_project_employees_to_add_employee_to_project"
+            app:destination="@id/nav_new_employee"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_nav_manage_project_employees_to_employee_details"
+            app:destination="@id/nav_employee_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_manage_tools"
+        android:name="no.purplecloud.toolsquirrel.ui.manageTools.ManageToolsFragment"
+        android:label="@string/menu_manage_tools"
+        tools:layout="@layout/fragment_manage_tools">
+        <action
+            android:id="@+id/action_nav_manage_tools_to_add_new_tool"
+            app:destination="@id/nav_new_tool"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_employee"
+        android:name="no.purplecloud.toolsquirrel.ui.manageEmployees.NewEmployeeFragment"
+        android:label="@string/add_employee_to_project"
+        tools:layout="@layout/fragment_new_employee" />
+
+    <fragment
+        android:id="@+id/nav_employee_details"
+        android:name="no.purplecloud.toolsquirrel.ui.manageEmployees.EmployeeDetailsFragment"
+        android:label="@string/employee_details"
+        tools:layout="@layout/fragment_employee_details" />
+
+    <fragment
+        android:id="@+id/nav_new_tool"
+        android:name="no.purplecloud.toolsquirrel.ui.manageTools.NewToolFragment"
+        android:label="@string/add_new_tool"
+        tools:layout="@layout/fragment_new_tool" />
+
 </navigation>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/grad"
+        android:id="@+id/profile_grad"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/profile_grad"
+        android:layout_marginTop="-32dp"
+        android:background="@drawable/border"
+        android:id="@+id/add_tool_title">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="9dp"
+            android:text="Add tool to project"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/add_tool_title">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:hint="@string/autocomplete_project"
+            android:id="@+id/add_tool_project_selector"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_tool_project_selector"
+            android:text="Tool Information"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/tool_information_header"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tool_information_header"
+            android:hint="Tool Name"
+            android:id="@+id/new_tool_name"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/new_tool_name"
+            android:layout_marginTop="10dp"
+            android:hint="Tool Description"
+            android:id="@+id/new_tool_desc"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/new_tool_desc"
+            android:layout_marginTop="10dp"
+            android:hint="Tool Location"
+            android:id="@+id/new_tool_location"/>
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Image"
+            android:layout_below="@id/new_tool_location"
+            android:id="@+id/new_tool_image_upload_btn"/>
+
+        <Button
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/new_tool_image_upload_btn"
+            android:text="Add New Tool"
+            android:textColor="#FFF"
+            android:backgroundTint="@color/colorPrimary"
+            android:id="@+id/add_tool_button"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/add_tool_button"
+            android:text=""
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/add_employee_status"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
