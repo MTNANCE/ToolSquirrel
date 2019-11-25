@@ -17,6 +17,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +27,7 @@ import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class ToolDetailsFragment extends Fragment {
 
@@ -57,9 +61,18 @@ public class ToolDetailsFragment extends Fragment {
     }
 
     private void getAllDuplicateTools(String toolName) {
-        VolleySingleton.getInstance(getContext())
-                .searchPostRequest(Endpoints.URL + "/getToolWithStatus/", toolName, "tool",
-                        this::formatToolAvailabilityTable);
+        try {
+            JSONObject activeProject = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromData("activeProject"));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("search", toolName);
+            jsonObject.put("project_id", activeProject.getInt("id"));
+
+            VolleySingleton.getInstance(getContext())
+                    .searchPostRequestWithBody(Endpoints.URL + "/getToolWithStatus/", jsonObject, "tool",
+                            this::formatToolAvailabilityTable);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void formatToolAvailabilityTable(List<Tool> tools) {

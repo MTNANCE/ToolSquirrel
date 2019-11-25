@@ -47,7 +47,7 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
 
     public void getAllProjectLeaders() {
         VolleySingleton.getInstance(this.context)
-                .searchPostRequest(Endpoints.URL + "/findProjectLeaders/", String.valueOf(this.selectedProject), "employee", listOfProjectLeaders::setValue);
+                .searchGetRequest(Endpoints.URL + "/findProjectLeaders/", String.valueOf(this.selectedProject), "employee", listOfProjectLeaders::setValue);
     }
 
     public void setSelectedProject(Long selectedProject) {

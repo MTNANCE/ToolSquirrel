@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
@@ -49,7 +50,7 @@ public class RentFragment extends Fragment {
                 try {
                     jsonObject.put("employee_id", employee.getId());
                     jsonObject.put("tool_id", mInput);
-                    VolleySingleton.getInstance(getContext()).postRequest("/rentTool", jsonObject,
+                    VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/rentTool", jsonObject,
                             response -> {
                                 Toast.makeText(getContext(), "Loan success", Toast.LENGTH_LONG).show();
                             }, error -> {

@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class ProjectViewModel extends AndroidViewModel {
 
@@ -51,13 +53,24 @@ public class ProjectViewModel extends AndroidViewModel {
     }
 
     public void searchForProjects(String search) {
-        VolleySingleton.getInstance(this.context)
-                .searchPostRequest(Endpoints.URL + "/searchProject/", search, "project", listOfProjects::setValue);
+        try {
+            // TODO Redundant?
+            Long employee_id = CacheSingleton.getInstance(context).getAuthenticatedUser().getId();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("search", search);
+            jsonObject.put("employee_id", employee_id);
+
+            VolleySingleton.getInstance(this.context)
+                    .searchPostRequestWithBody(Endpoints.URL + "/searchProject/", jsonObject, "project", listOfProjects::setValue);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getAllProjects() {
+        Long employee_id = CacheSingleton.getInstance(context).getAuthenticatedUser().getId();
         VolleySingleton.getInstance(this.context)
-                .getListRequest(Endpoints.URL + "/findAllProjects", "project", listOfProjects::setValue);
+                .getListRequest(Endpoints.URL + "/findAllProjectsUserIsLeaderFor/" + employee_id, "project", listOfProjects::setValue);
     }
 
 }

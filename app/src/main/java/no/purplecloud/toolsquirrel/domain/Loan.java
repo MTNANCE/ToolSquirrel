@@ -1,5 +1,8 @@
 package no.purplecloud.toolsquirrel.domain;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +20,7 @@ public class Loan {
 
     private String dueDate;
 
-    private Employee loaner;
+    private Long employee_id;
 
     /** TODO Remove this when done testing
      * Constructor for creating a dummy/test loan
@@ -28,5 +31,17 @@ public class Loan {
         this.toolId = toolId;
         this.toolName = toolName;
         this.dueDate = dueDate;
+    }
+
+    public Loan(JSONObject jsonObject) {
+        System.out.println("JSONObject: " + jsonObject);
+        try {
+            this.toolId = jsonObject.getLong("toolId");
+            this.toolName = jsonObject.getString("toolName");
+            this.dueDate = jsonObject.getString("dueDate").split(" ")[0];
+            this.employee_id = jsonObject.getLong("employee_id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

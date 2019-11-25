@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Loan;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
@@ -38,7 +39,7 @@ public class LoansViewModel extends AndroidViewModel {
 
     private void getAllLoans() {
         Employee employee = CacheSingleton.getInstance(context).getAuthenticatedUser();
-        VolleySingleton.getInstance(context).getListRequest("/findAllBorrows/" + employee.getId(), "tool",
+        VolleySingleton.getInstance(context).getListRequest(Endpoints.URL + "/findAllBorrows/" + employee.getId(), "loan",
                 list -> this.listOfLoans.setValue(list));
     }
 }

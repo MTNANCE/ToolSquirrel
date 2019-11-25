@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.squareup.picasso.Cache;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -22,9 +23,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 
@@ -37,8 +40,7 @@ public class profile extends Fragment {
 
     private Spinner spinner;
 
-    // TODO Remove this
-    private List<Project> listOfProjects = new ArrayList<>();
+    private List<Project> listOfProjects = null;
 
     @Nullable
     @Override
@@ -51,53 +53,66 @@ public class profile extends Fragment {
         this.profilePhone = rootView.findViewById(R.id.profile_phone);
         // Spinner related
         this.spinner = rootView.findViewById(R.id.profile_spinner);
-        // Create dummy data
-        this.listOfProjects.add(new Project(1L, "Test Project", "Test desc", "", "test location"));
-        this.listOfProjects.add(new Project(2L, "amøbe", "test", "cyka", "travo"));
         // Get authenticated user
         Employee authenticatedUser = CacheSingleton.getInstance(getContext()).getAuthenticatedUser();
-        // Set profile information
-        Picasso.get().load(authenticatedUser.getImage()).into(this.profileImage);
-        this.profileName.setText(authenticatedUser.getName());
-        this.profileEmail.setText(authenticatedUser.getEmail());
-        this.profilePhone.setText(String.valueOf(authenticatedUser.getPhone()));
-        // Custom spinner adapter
-        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, this.listOfProjects);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        this.spinner.setAdapter(adapter);
-        // Check if there already is an active project
-        if (!CacheSingleton.getInstance(getContext()).loadFromData("activeProject").trim().equals("") &&
-                CacheSingleton.getInstance(getContext()).loadFromData("activeProject") != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromData("activeProject"));
-                this.spinner.setSelection(jsonObject.getInt("position"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        // Set listener
-        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                Project selectedProject = adapter.getItem(position);
-                try {
-                    // TODO Maybe add more active project details?
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("id", selectedProject.getProjectId());
-                    jsonObject.put("name", selectedProject.getProjectName());
-                    jsonObject.put("position", position);
-                    CacheSingleton.getInstance(getContext()).saveToData("activeProject", jsonObject.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL +"/findAllProjectsThatUserIsIn/" + authenticatedUser.getId(), "project", list -> {
+                    this.listOfProjects = list;
+                    // Set profile information
+                    Picasso.get().load(authenticatedUser.getImage()).into(this.profileImage);
+                    this.profileName.setText(authenticatedUser.getName());
+                    this.profileEmail.setText(authenticatedUser.getEmail());
+                    this.profilePhone.setText(String.valueOf(authenticatedUser.getPhone()));
+                    // Custom spinner adapter
+                    SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, this.listOfProjects);
+                    adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                    this.spinner.setAdapter(adapter);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
+                    // Check if there already is an active project
+                    if (!CacheSingleton.getInstance(getContext()).loadFromData("activeProject").trim().equals("") &&
+                            CacheSingleton.getInstance(getContext()).loadFromData("activeProject") != null) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromData("activeProject"));
+                            this.spinner.setSelection(jsonObject.getInt("position"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Project predefinedProject = this.listOfProjects.get(0);
+                        try {
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("id", predefinedProject.getProjectId());
+                            jsonObject.put("name", predefinedProject.getProjectName());
+                            jsonObject.put("position", 0);
+                            CacheSingleton.getInstance(getContext()).saveToData("activeProject", jsonObject.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Set listener
+                    this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            Project selectedProject = adapter.getItem(position);
+                            try {
+                                // TODO Maybe add more active project details?
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("id", selectedProject.getProjectId());
+                                jsonObject.put("name", selectedProject.getProjectName());
+                                jsonObject.put("position", position);
+                                CacheSingleton.getInstance(getContext()).saveToData("activeProject", jsonObject.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                });
         return rootView;
     }
 

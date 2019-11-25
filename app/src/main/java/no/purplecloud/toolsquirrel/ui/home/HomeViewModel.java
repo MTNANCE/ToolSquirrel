@@ -7,11 +7,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class HomeViewModel extends AndroidViewModel {
 
@@ -44,19 +48,28 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void searchForTools(String search) {
-        VolleySingleton.getInstance(this.context)
-                .searchPostRequest(Endpoints.URL + "/searchTool/", search, "tool", listOfTools::setValue);
+        try {
+            // TODO Redundant?
+            JSONObject activeProject = new JSONObject(CacheSingleton.getInstance(context).loadFromData("activeProject"));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("search", search);
+            jsonObject.put("project_id", activeProject.getInt("id"));
 
-    }
-
-    private void getAllTools() {
-        VolleySingleton.getInstance(this.context)
-                .getListRequest(Endpoints.URL + "/getAllTools", "tool", listOfTools::setValue);
+            VolleySingleton.getInstance(this.context)
+                    .searchPostRequestWithBody(Endpoints.URL + "/searchTool", jsonObject, "tool", listOfTools::setValue);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getAllUniqueTools() {
-        VolleySingleton.getInstance(this.context)
-                .getListRequest(Endpoints.URL + "/getAllUniqueTools", "tool", listOfTools::setValue);
-    }
+        try {
+            JSONObject activeProject = new JSONObject(CacheSingleton.getInstance(context).loadFromData("activeProject"));
+            VolleySingleton.getInstance(this.context)
+                    .getListRequest(Endpoints.URL + "/getAllUniqueToolsByProject/" + activeProject.getInt("id"), "tool", listOfTools::setValue);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+      }
 
 }

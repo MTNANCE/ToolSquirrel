@@ -154,7 +154,7 @@ public class CacheSingleton {
             switch (file) {
                 case fileName:
                     File foundFile = new File(context.getDataDir(), fileName);
-                    if (foundFile.exists()) {
+                    if (!foundFile.toString().trim().equals("")) {
                         fileInputStream = context.openFileInput(fileName);
                     }
                     break;

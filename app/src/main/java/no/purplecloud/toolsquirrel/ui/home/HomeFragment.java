@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String search) {
                 System.out.println("Search Input: " + search);
-                if (search.trim().equals("")) {
+                if (search.isEmpty()) {
                     homeViewModel.getTools();
                 } else {
                     homeViewModel.searchForTools(search);
