@@ -41,7 +41,7 @@ public class APIClient {
                 put("password", password);
             }};
 
-            StringRequest request = new StringRequest(Request.Method.POST, Endpoints.LOGIN,
+            StringRequest request = new StringRequest(Request.Method.POST, Endpoints.URL + "/login",
                     null, e -> l.onLogin(false, "Format or credentials is incorrect")) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
@@ -58,10 +58,6 @@ public class APIClient {
 
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    Map<String, String> asd = response.headers;
-                    asd.forEach((one, two) ->   {
-                        System.out.println(one + " | " + two);
-                    });
                     CacheSingleton.getInstance(context).saveToCache("token",
                             response.headers.get("Authorization").split(" ")[1]);
                     l.onLogin(true, "Logged in!");

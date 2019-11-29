@@ -62,7 +62,7 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
-    private void getAllUniqueTools() {
+    public void getAllUniqueTools() {
         try {
             JSONObject activeProject = new JSONObject(CacheSingleton.getInstance(context).loadFromData("activeProject"));
             VolleySingleton.getInstance(this.context)
