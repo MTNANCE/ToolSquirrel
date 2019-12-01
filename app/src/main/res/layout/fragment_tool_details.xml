@@ -67,37 +67,9 @@
                 android:text="Location" />
         </TableRow>
 
-        <TableRow>
+        <TableRow/>
 
-            <TextView
-                android:padding="3dip"
-                android:text="#12345678" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="Available" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="A300 (Blå)" />
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:padding="3dip"
-                android:text="#38193028" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="Loaned" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="A300 (Blå)" />
-
-        </TableRow>
+        <TableRow/>
 
     </TableLayout>
 

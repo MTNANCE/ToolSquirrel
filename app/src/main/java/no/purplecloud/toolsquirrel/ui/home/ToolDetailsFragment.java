@@ -22,7 +22,7 @@ import java.util.List;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
-import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.domain.ToolStatus;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
 public class ToolDetailsFragment extends Fragment {
@@ -58,21 +58,21 @@ public class ToolDetailsFragment extends Fragment {
 
     private void getAllDuplicateTools(String toolName) {
         VolleySingleton.getInstance(getContext())
-                .searchPostRequest(Endpoints.URL + "/getToolWithStatus/", toolName, "tool",
+                .searchPostRequest(Endpoints.URL + "/getToolStatus/", toolName, "toolstatus",
                         this::formatToolAvailabilityTable);
     }
 
-    private void formatToolAvailabilityTable(List<Tool> tools) {
-        tools.forEach(tool -> {
+    private void formatToolAvailabilityTable(List<ToolStatus> toolStatuses) {
+        toolStatuses.forEach(status -> {
             TableRow tr = new TableRow(getContext());
 
             TextView txtId = new TextView(getContext());
             TextView txtStatus = new TextView(getContext());
             TextView txtLocation = new TextView(getContext());
 
-            txtId.setText("#".concat(String.valueOf(tool.getId())));
-            txtStatus.setText("Not impl.ed");
-            txtLocation.setText(tool.getToolLocation());
+            txtId.setText("#".concat(String.valueOf(status.getId())));
+            txtStatus.setText((status.isAvailable()) ? "Available" : "Loaned");
+            txtLocation.setText(status.getLocation());
 
             List<TextView> textViews = Arrays.asList(txtId, txtStatus, txtLocation);
 

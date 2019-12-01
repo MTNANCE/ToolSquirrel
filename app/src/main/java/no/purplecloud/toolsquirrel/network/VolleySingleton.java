@@ -19,6 +19,7 @@ import java.util.List;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
+import no.purplecloud.toolsquirrel.domain.ToolStatus;
 import no.purplecloud.toolsquirrel.listener.CallbackListener;
 import no.purplecloud.toolsquirrel.listener.ResponseListener;
 import no.purplecloud.toolsquirrel.listener.VolleyErrorListener;
@@ -104,6 +105,9 @@ public class VolleySingleton {
 
                                 case "employee":
                                     list.add(new Employee(response.getJSONObject(i)));
+                                    break;
+                                case "toolstatus":
+                                    list.add(new ToolStatus(response.getJSONObject(i)));
                                     break;
                             }
                         } catch (JSONException e) {
