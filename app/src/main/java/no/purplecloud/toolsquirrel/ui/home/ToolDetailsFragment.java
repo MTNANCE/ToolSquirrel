@@ -62,7 +62,7 @@ public class ToolDetailsFragment extends Fragment {
 
     private void getAllDuplicateTools(String toolName) {
         VolleySingleton.getInstance(getContext())
-                .searchPostRequest(Endpoints.URL + "/getToolStatus/", toolName, "toolstatus",
+                .searchGetRequest(Endpoints.URL + "/getToolStatus/", toolName, "toolstatus",
                         this::formatToolAvailabilityTable);
     }
 
