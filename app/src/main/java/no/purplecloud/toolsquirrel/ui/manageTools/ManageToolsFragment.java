@@ -111,22 +111,24 @@ public class ManageToolsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String search) {
-                if (search.trim().equals("")) {
-                    VolleySingleton.getInstance(getContext())
-                            .getListRequest(Endpoints.URL + "/getAllUniqueToolsByProject/" + selectedProject.split("#")[1],
-                                    "tool", list -> manageToolsViewModel.setListOfTools(list));
-                } else {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("search", search);
-                        jsonObject.put("project_id", selectedProject.split("#")[1]);
-                        if (!selectedProject.isEmpty()) {
-                            VolleySingleton.getInstance(getContext())
-                                    .searchPostRequestWithBody(Endpoints.URL + "/searchTool",
-                                            jsonObject, "tool", list -> manageToolsViewModel.setListOfTools(list));
+                if (selectedProject != null) {
+                    if (search.trim().equals("")) {
+                        VolleySingleton.getInstance(getContext())
+                                .getListRequest(Endpoints.URL + "/getAllUniqueToolsByProject/" + selectedProject.split("#")[1],
+                                        "tool", list -> manageToolsViewModel.setListOfTools(list));
+                    } else {
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("search", search);
+                            jsonObject.put("project_id", selectedProject.split("#")[1]);
+                            if (!selectedProject.isEmpty()) {
+                                VolleySingleton.getInstance(getContext())
+                                        .searchPostRequestWithBody(Endpoints.URL + "/searchTool",
+                                                jsonObject, "tool", list -> manageToolsViewModel.setListOfTools(list));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
                 return true;

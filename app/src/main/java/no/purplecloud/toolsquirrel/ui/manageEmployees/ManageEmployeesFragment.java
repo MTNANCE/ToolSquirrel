@@ -111,25 +111,27 @@ public class ManageEmployeesFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String search) {
-                if (search.trim().equals("")) {
-                    VolleySingleton.getInstance(getContext())
-                            .getListRequest(Endpoints.URL + "/employeesInProject/" + selectedProject.split("#")[1],
-                                    "employee", list -> manageEmployeesViewModel.setListOfEmployees(list));
-                } else {
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("search", search);
-                        jsonObject.put("project_id", selectedProject.split("#")[1]);
-                        if (!selectedProject.isEmpty()) {
-                            VolleySingleton.getInstance(getContext())
-                                    .searchPostRequestWithBody(Endpoints.URL + "/searchForEmployeesInProject", jsonObject,
-                                            "employee", list -> {
-                                                System.out.println("LIST: " + list);
-                                                manageEmployeesViewModel.setListOfEmployees(list);
-                                            });
+                if (selectedProject != null) {
+                    if (search.trim().equals("")) {
+                        VolleySingleton.getInstance(getContext())
+                                .getListRequest(Endpoints.URL + "/employeesInProject/" + selectedProject.split("#")[1],
+                                        "employee", list -> manageEmployeesViewModel.setListOfEmployees(list));
+                    } else {
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("search", search);
+                            jsonObject.put("project_id", selectedProject.split("#")[1]);
+                            if (!selectedProject.isEmpty()) {
+                                VolleySingleton.getInstance(getContext())
+                                        .searchPostRequestWithBody(Endpoints.URL + "/searchForEmployeesInProject", jsonObject,
+                                                "employee", list -> {
+                                                    System.out.println("LIST: " + list);
+                                                    manageEmployeesViewModel.setListOfEmployees(list);
+                                                });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
                 return true;
