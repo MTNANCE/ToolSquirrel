@@ -25,7 +25,9 @@ import java.io.ByteArrayOutputStream;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class NewProjectFragment extends Fragment {
 
@@ -108,6 +110,8 @@ public class NewProjectFragment extends Fragment {
             jsonObject.put("desc", desc);
             jsonObject.put("location", location);
             jsonObject.put("image", imgBytes);
+            Employee authenticatedEmployee = CacheSingleton.getInstance(getContext()).getAuthenticatedUser();
+            jsonObject.put("employee_id", authenticatedEmployee.getId());
 
             VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/addNewProject", jsonObject,
                     response -> {
@@ -127,7 +131,7 @@ public class NewProjectFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // When the client has chosen a picture, update the imageview
+        // When the client has chosen a picture, update the ImageView
         if (data != null) {
             if (resultCode == Activity.RESULT_OK) {
                 uploadedImg.setImageURI(data.getData());

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.domain.Employee;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
 
 public class ManageEmployeesViewModel extends AndroidViewModel {
 
@@ -39,13 +40,12 @@ public class ManageEmployeesViewModel extends AndroidViewModel {
     public LiveData<List<Employee>> getEmployees() {
         if (this.listOfEmployees == null) {
             this.listOfEmployees = new MutableLiveData<>();
-            getAllEmployeesInProject();
         }
         return this.listOfEmployees;
     }
 
-    public void getAllEmployeesInProject() {
-
+    public void setListOfEmployees(List<Employee> list) {
+        this.listOfEmployees.setValue(list);
     }
 
     public void setSelectedProject(Long selectedProject) {

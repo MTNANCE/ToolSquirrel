@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel.ui.profile;
+package no.purplecloud.toolsquirrel.adapter;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -20,7 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class ManageEmployeesFragment extends Fragment {
 
@@ -32,10 +42,8 @@ public class ManageEmployeesFragment extends Fragment {
 
     private String selectedProject;
 
-    private String[] dummy = {
-            "Stadia (#1031548)",
-            "Vertex (#1341323)"
-    };
+    // TODO Hold on projects instead (need to create a custom adapter in that case)
+    private List<String> projectList = new ArrayList();
 
     @Nullable
     @Override
@@ -61,12 +69,21 @@ public class ManageEmployeesFragment extends Fragment {
         this.manageEmployeesViewModel.getEmployees().observe(this, employees ->
                 recyclerView.setAdapter(new ManageEmployeesRecyclerAdapter(employees)));
 
-        // Setup AutoComplete Related stuff TODO Change type of adapter (probably)
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, dummy);
-        // Define the threshold point where it is going to start searching
-        this.autoCompleteProjectSearch.setThreshold(1);
-        // Attach adapter
-        this.autoCompleteProjectSearch.setAdapter(adapter);
+        // Setup AutoComplete Related stuff
+        Long employee_id = CacheSingleton.getInstance(getContext()).getAuthenticatedUser().getId();
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL + "/findAllProjectsUserIsLeaderFor/" + employee_id, "project", list -> {
+                    for (Object object : list) {
+                        if (object instanceof Project) {
+                            this.projectList.add(((Project) object).getProjectName() + " #" + ((Project) object).getProjectId());
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, projectList);
+                    // Define the threshold point where it is going to start searching
+                    this.autoCompleteProjectSearch.setThreshold(1);
+                    // Attach adapter
+                    this.autoCompleteProjectSearch.setAdapter(adapter);
+                });
         return rootView;
     }
 
@@ -81,9 +98,11 @@ public class ManageEmployeesFragment extends Fragment {
         // AutoCompleteSelector
         this.autoCompleteProjectSearch.setOnItemClickListener((adapterView, view, i, l) -> {
             this.selectedProject = adapterView.getItemAtPosition(i).toString();
-            System.out.println("Selected Employee: " + this.selectedProject);
+            VolleySingleton.getInstance(getContext())
+                    .getListRequest(Endpoints.URL + "/employeesInProject/" + selectedProject.split("#")[1],
+                            "employee", list -> manageEmployeesViewModel.setListOfEmployees(list));
         });
-        // Search bar (Search for employee)
+        // Search bar (search for employee)
         this.searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String search) {
@@ -93,9 +112,25 @@ public class ManageEmployeesFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String search) {
                 if (search.trim().equals("")) {
-                    // TODO Get All users
+                    VolleySingleton.getInstance(getContext())
+                            .getListRequest(Endpoints.URL + "/employeesInProject/" + selectedProject.split("#")[1],
+                                    "employee", list -> manageEmployeesViewModel.setListOfEmployees(list));
                 } else {
-                    // TODO Get all users that match the input search
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("search", search);
+                        jsonObject.put("project_id", selectedProject.split("#")[1]);
+                        if (!selectedProject.isEmpty()) {
+                            VolleySingleton.getInstance(getContext())
+                                    .searchPostRequestWithBody(Endpoints.URL + "/searchForEmployeesInProject", jsonObject,
+                                            "employee", list -> {
+                                                System.out.println("LIST: " + list);
+                                                manageEmployeesViewModel.setListOfEmployees(list);
+                                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return true;
             }

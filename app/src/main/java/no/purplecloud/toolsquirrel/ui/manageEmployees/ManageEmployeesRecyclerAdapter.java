@@ -42,7 +42,7 @@ public class ManageEmployeesRecyclerAdapter extends RecyclerView.Adapter<ManageE
         Picasso.get().load(this.listOfEmployees.get(position).getImage()).into(holder.image);
         holder.name.setText(this.listOfEmployees.get(position).getName());
         holder.position.setText(this.listOfEmployees.get(position).getPosition());
-        holder.position.setText(String.valueOf(this.listOfEmployees.get(position).getPhone()));
+        holder.phone.setText("Tlf..: " + this.listOfEmployees.get(position).getPhone());
         holder.view.setOnClickListener(v -> this.manageEmployeesViewModel.setSelectedEmployee(this.listOfEmployees.get(position)));
     }
 

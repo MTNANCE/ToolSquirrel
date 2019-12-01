@@ -40,13 +40,12 @@ public class ManageToolsViewModel extends AndroidViewModel {
     public LiveData<List<Tool>> getTools() {
         if (this.listOfTools == null) {
             this.listOfTools = new MutableLiveData<>();
-            getAllToolsInProject();
         }
         return this.listOfTools;
     }
 
-    public void getAllToolsInProject() {
-
+    public void setListOfTools(List<Tool> list) {
+        this.listOfTools.setValue(list);
     }
 
     public void setSelectedProject(Long selectedProject) {
