@@ -80,4 +80,10 @@ public class ProjectFragment extends Fragment {
             navController.navigate(R.id.action_nav_projects_to_add_new_project);
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        projectViewModel.getProjects();
+    }
 }

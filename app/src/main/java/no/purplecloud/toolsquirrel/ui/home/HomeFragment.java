@@ -62,12 +62,18 @@ public class HomeFragment extends Fragment {
             public boolean onQueryTextChange(String search) {
                 System.out.println("Search Input: " + search);
                 if (search.isEmpty()) {
-                    homeViewModel.getTools();
+                    homeViewModel.getAllUniqueTools();
                 } else {
                     homeViewModel.searchForTools(search);
                 }
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        homeViewModel.getAllUniqueTools();
     }
 }

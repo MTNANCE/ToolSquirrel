@@ -53,24 +53,13 @@ public class ProjectViewModel extends AndroidViewModel {
     }
 
     public void searchForProjects(String search) {
-        try {
-            // TODO Redundant?
-            Long employee_id = CacheSingleton.getInstance(context).getAuthenticatedUser().getId();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("search", search);
-            jsonObject.put("employee_id", employee_id);
-
-            VolleySingleton.getInstance(this.context)
-                    .searchPostRequestWithBody(Endpoints.URL + "/searchProject/", jsonObject, "project", listOfProjects::setValue);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        VolleySingleton.getInstance(this.context)
+                .searchGetRequest(Endpoints.URL + "/searchAllProjects/", search, "project", listOfProjects::setValue);
     }
 
     private void getAllProjects() {
-        Long employee_id = CacheSingleton.getInstance(context).getAuthenticatedUser().getId();
         VolleySingleton.getInstance(this.context)
-                .getListRequest(Endpoints.URL + "/findAllProjectsUserIsLeaderFor/" + employee_id, "project", listOfProjects::setValue);
+                .getListRequest(Endpoints.URL + "/findAllProjects", "project", listOfProjects::setValue);
     }
 
 }

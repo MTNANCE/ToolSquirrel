@@ -20,7 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesRecyclerAdapter;
 import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 
@@ -34,11 +44,8 @@ public class ManageToolsFragment extends Fragment {
 
     private String selectedProject;
 
-    // TODO Remove this
-    private String[] dummy = {
-            "Stadia (#1031548)",
-            "Vertex (#1341323)"
-    };
+    // TODO Hold on projects instead (need to create a custom adapter in that case)
+    private List<String> projectList = new ArrayList();
 
     @Nullable
     @Override
@@ -64,12 +71,21 @@ public class ManageToolsFragment extends Fragment {
         this.manageToolsViewModel.getTools().observe(this, tools ->
                 recyclerView.setAdapter(new ManageToolRecyclerAdapter(tools)));
 
-        // Setup AutoComplete Related stuff TODO Change type of adapter (probably)
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, dummy);
-        // Define the threshold point where it is going to start searching
-        this.autoCompleteProjectSearch.setThreshold(1);
-        // Attach adapter
-        this.autoCompleteProjectSearch.setAdapter(adapter);
+        // Setup AutoComplete Related stuff
+        Long employee_id = CacheSingleton.getInstance(getContext()).getAuthenticatedUser().getId();
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL + "/findAllProjectsUserIsLeaderFor/" + employee_id, "project", list -> {
+                    for (Object object : list) {
+                        if (object instanceof Project) {
+                            this.projectList.add(((Project) object).getProjectName() + " #" + ((Project) object).getProjectId());
+                        }
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, projectList);
+                    // Define the threshold point where it is going to start searching
+                    this.autoCompleteProjectSearch.setThreshold(1);
+                    // Attach adapter
+                    this.autoCompleteProjectSearch.setAdapter(adapter);
+                });
         return rootView;
     }
 
@@ -78,6 +94,43 @@ public class ManageToolsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         this.fab.setOnClickListener(event -> {
             navController.navigate(R.id.action_nav_manage_tools_to_add_new_tool);
+        });
+        // AutoCompleteSelector
+        this.autoCompleteProjectSearch.setOnItemClickListener(((adapterView, view, i, l) -> {
+            this.selectedProject = adapterView.getItemAtPosition(i).toString();
+            VolleySingleton.getInstance(getContext())
+                    .getListRequest(Endpoints.URL + "/getAllUniqueToolsByProject/" + selectedProject.split("#")[1],
+                            "tool", list -> manageToolsViewModel.setListOfTools(list));
+        }));
+        // Search bar (search for tools)
+        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String search) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String search) {
+                if (search.trim().equals("")) {
+                    VolleySingleton.getInstance(getContext())
+                            .getListRequest(Endpoints.URL + "/getAllUniqueToolsByProject/" + selectedProject.split("#")[1],
+                                    "tool", list -> manageToolsViewModel.setListOfTools(list));
+                } else {
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("search", search);
+                        jsonObject.put("project_id", selectedProject.split("#")[1]);
+                        if (!selectedProject.isEmpty()) {
+                            VolleySingleton.getInstance(getContext())
+                                    .searchPostRequestWithBody(Endpoints.URL + "/searchTool",
+                                            jsonObject, "tool", list -> manageToolsViewModel.setListOfTools(list));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return true;
+            }
         });
     }
 }

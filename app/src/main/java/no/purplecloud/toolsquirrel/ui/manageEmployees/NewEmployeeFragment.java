@@ -15,7 +15,15 @@ import androidx.fragment.app.Fragment;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Employee;
+import no.purplecloud.toolsquirrel.domain.Project;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class NewEmployeeFragment extends Fragment {
 
@@ -29,15 +37,8 @@ public class NewEmployeeFragment extends Fragment {
     // Change this to be of type Project
     private String selectedProject;
 
-    // TODO Remove this
-    private String[] dummy = {
-            "Aron Nicholasson (aronmar@live.no)",
-            "Liban Nor (libanbn@gmail.com)",
-            "Trygve Bærtrum (trygve@live.no)",
-            "Dudleif Rompesaft (dudleif@rompesaft.no",
-            "Satanistiske kora (kora@guderminfrelser.com",
-            "Gaute Gravlagt (gauteburdebegraves@live.no"
-    };
+    private List<String> employeeList = new ArrayList<>();
+    private List<String> projectList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -48,13 +49,38 @@ public class NewEmployeeFragment extends Fragment {
         this.status = rootView.findViewById(R.id.add_employee_status);
         this.submitBtn = rootView.findViewById(R.id.add_employee_button);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, dummy);
-        // Define the threshold point where it is going to start searching
-        this.autoCompleteEmployee.setThreshold(1);
-        this.autoCompleteProject.setThreshold(1);
-        // Attach adapter
-        this.autoCompleteEmployee.setAdapter(adapter);
-        this.autoCompleteProject.setAdapter(adapter);
+        // Setup Employee AutoComplete
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL + "/employees", "employee",
+                        foo -> {
+                            for (Object object : foo) {
+                                if (object instanceof Employee) {
+                                    this.projectList.add(((Employee) object).getName() + " #" + ((Employee) object).getId());
+                                }
+                            }
+                            ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, employeeList);
+                            // Define the threshold point where it is going to start searching
+                            this.autoCompleteEmployee.setThreshold(1);
+                            // Attach adapter
+                            this.autoCompleteEmployee.setAdapter(employeeAdapter);
+                        }
+                );
+        // TODO This is some really dumb shit, change this shit to be some callback shit instead
+        // Setup Project AutoComplete
+        Long employee_id = CacheSingleton.getInstance(getContext()).getAuthenticatedUser().getId();
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL + "/findAllProjectsUserIsLeaderFor/" + employee_id, "project", bar -> {
+                    for (Object object : bar) {
+                        if (object instanceof Project) {
+                            this.projectList.add(((Project) object).getProjectName() + " #" + ((Project) object).getProjectId());
+                        }
+                    }
+                    ArrayAdapter<String> projectAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, projectList);
+                    // Define the threshold point where it is going to start searching
+                    this.autoCompleteProject.setThreshold(1);
+                    // Attach adapter
+                    this.autoCompleteProject.setAdapter(projectAdapter);
+                });
 
         return rootView;
     }
