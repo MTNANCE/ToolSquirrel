@@ -2,6 +2,10 @@ package no.purplecloud.toolsquirrel.ui.manageTools;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -12,11 +16,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +46,8 @@ public class NewToolFragment extends Fragment {
     private Button uploadImageBtn;
     // Submit btn
     private Button submitBtn;
+    // Status
+    private TextView status;
 
     // Change this to be of type Project
     private String selectedProject;
@@ -54,6 +65,7 @@ public class NewToolFragment extends Fragment {
         this.imagePreview = rootView.findViewById(R.id.new_tool_image_preview);
         this.uploadImageBtn = rootView.findViewById(R.id.new_tool_image_upload_btn);
         this.submitBtn = rootView.findViewById(R.id.add_tool_button);
+        this.status = rootView.findViewById(R.id.add_tool_status);
 
         // TODO This is some really dumb shit, change this shit to be some callback shit instead
         // Setup Project AutoComplete
@@ -88,7 +100,7 @@ public class NewToolFragment extends Fragment {
                     MediaStore.Images.Media.INTERNAL_CONTENT_URI), 3);
         });
         // Submit button on click listener
-        this.submitBtn.setOnClickListener(l -> {
+        /*this.submitBtn.setOnClickListener(l -> {
             String mToolName = this.toolName.getText().toString();
             String mToolDesc = this.toolDesc.getText().toString();
             String mToolLocation = this.toolLocation.getText().toString();
@@ -107,10 +119,45 @@ public class NewToolFragment extends Fragment {
                     !mToolLocation.trim().isEmpty()) {
                 newTool(mToolName, mToolDesc, mToolLocation);
             }
-        });
+        });*/
     }
 
     public void newTool(String name, String desc, String location) {
+        // Check if client has uploaded an image
+        if (imagePreview.getDrawable() instanceof AdaptiveIconDrawable) {
+            this.status.setText("Please select an image.");
+            this.status.setTextColor(Color.parseColor("#e01919"));
+            return;
+        }
+
+        // Get image as bitmap
+        Bitmap bitmap = ((BitmapDrawable) imagePreview.getDrawable()).getBitmap();
+
+        // Create an output stream and feed it the content of the image
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+        // Get the content as bytes (will be used to send to API)
+        byte[] imgBytes = baos.toByteArray();
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("name", name);
+            jsonObject.put("desc", desc);
+            jsonObject.put("location", location);
+            jsonObject.put("image", imgBytes);
+
+            VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/newToolWithImage", jsonObject,
+                    response -> {
+                        this.status.setText("Tool creation success!");
+                        this.status.setTextColor(Color.parseColor("#1fa139"));
+                    }, error -> {
+                        this.status.setText("Tool creation failed.");
+                        this.status.setTextColor(Color.parseColor("#e01919"));
+                    });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

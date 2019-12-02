@@ -94,7 +94,7 @@ public class NewProjectFragment extends Fragment {
             return;
         }
 
-        // Get iamge as bitmap
+        // Get image as bitmap
         Bitmap bitmap = ((BitmapDrawable) uploadedImg.getDrawable()).getBitmap();
 
         // Create an output stream and feed it the content of the image
@@ -131,7 +131,7 @@ public class NewProjectFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // When the client has chosen a picture, update the ImageView
+        // When the client has chosen a picture, update the imageview
         if (data != null) {
             if (resultCode == Activity.RESULT_OK) {
                 uploadedImg.setImageURI(data.getData());

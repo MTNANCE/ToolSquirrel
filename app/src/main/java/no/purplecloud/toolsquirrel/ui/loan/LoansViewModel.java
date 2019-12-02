@@ -32,14 +32,18 @@ public class LoansViewModel extends AndroidViewModel {
     public LiveData<List<Loan>> getLoans() {
         if (this.listOfLoans == null) {
             this.listOfLoans = new MutableLiveData<>();
-            getAllLoans();
+            getListOfLoans();
         }
         return this.listOfLoans;
     }
 
-    private void getAllLoans() {
+    public void getListOfLoans() {
         Employee employee = CacheSingleton.getInstance(context).getAuthenticatedUser();
         VolleySingleton.getInstance(context).getListRequest(Endpoints.URL + "/findAllBorrows/" + employee.getId(), "loan",
-                list -> this.listOfLoans.setValue(list));
+                list -> listOfLoans.setValue(list));
+    }
+
+    public void setListOfLoans(List<Loan> list) {
+        this.listOfLoans.setValue(list);
     }
 }
