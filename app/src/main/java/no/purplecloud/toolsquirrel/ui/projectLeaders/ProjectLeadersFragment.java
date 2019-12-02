@@ -18,7 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import no.purplecloud.toolsquirrel.ui.loan.LoanListRecyclerViewAdapter;
 import no.purplecloud.toolsquirrel.ui.loan.LoansViewModel;
 
@@ -62,6 +68,39 @@ public class ProjectLeadersFragment extends Fragment {
         this.fab.setOnClickListener(event -> {
             // Redirect client to the add new project leader fragment
             navController.navigate(R.id.action_nav_project_leaders_to_add_new_project_leader);
+        });
+        this.searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String search) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String search) {
+                String selectedProjectId = CacheSingleton.getInstance(getContext()).loadFromData("selected_project");
+                if (!selectedProjectId.isEmpty() && selectedProjectId != null) {
+                    if (search.trim().equals("")) {
+                        VolleySingleton.getInstance(getContext())
+                                .searchGetRequest(Endpoints.URL + "/findProjectLeaders/",
+                                        selectedProjectId, "employee",
+                                        list -> projectLeadersViewModel.setListOfProjectLeaders(list));
+                    } else {
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("search", search);
+                            jsonObject.put("project_id", selectedProjectId);
+                            VolleySingleton.getInstance(getContext())
+                                    .searchPostRequestWithBody(Endpoints.URL + "/searchAllProjectLeaders",
+                                            jsonObject, "employee",
+                                            list -> projectLeadersViewModel.setListOfProjectLeaders(list));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return true;
+            }
         });
     }
 }

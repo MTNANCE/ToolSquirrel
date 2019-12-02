@@ -29,6 +29,8 @@ public class ProjectViewModel extends AndroidViewModel {
     // Observable selected project
     private MutableLiveData<Project> selectedProject = new MutableLiveData<>();
 
+    private Long selectedProjectid;
+
     private Context context;
 
     public ProjectViewModel(Application context) {
@@ -62,4 +64,11 @@ public class ProjectViewModel extends AndroidViewModel {
                 .getListRequest(Endpoints.URL + "/findAllProjects", "project", listOfProjects::setValue);
     }
 
+    public void setSelectedProjectid(Long selectedProjectid) {
+        this.selectedProjectid = selectedProjectid;
+    }
+
+    public Long getSelectedProjectid() {
+        return selectedProjectid;
+    }
 }

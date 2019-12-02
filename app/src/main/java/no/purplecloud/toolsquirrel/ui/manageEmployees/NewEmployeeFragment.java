@@ -66,7 +66,6 @@ public class NewEmployeeFragment extends Fragment {
                             this.autoCompleteEmployee.setAdapter(employeeAdapter);
                         }
                 );
-        // TODO This is some really dumb shit, change this shit to be some callback shit instead
         // Setup Project AutoComplete
         Long employee_id = CacheSingleton.getInstance(getContext()).getAuthenticatedUser().getId();
         VolleySingleton.getInstance(getContext())
