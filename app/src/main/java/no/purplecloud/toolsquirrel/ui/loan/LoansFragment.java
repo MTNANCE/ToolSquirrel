@@ -48,7 +48,6 @@ public class LoansFragment extends Fragment {
         return rootView;
     }
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

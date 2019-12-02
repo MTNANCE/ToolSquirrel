@@ -38,6 +38,7 @@ public class NewEmployeeFragment extends Fragment {
     private String selectedProject;
 
     private List<String> employeeList = new ArrayList<>();
+
     private List<String> projectList = new ArrayList<>();
 
     @Nullable
@@ -55,7 +56,7 @@ public class NewEmployeeFragment extends Fragment {
                         foo -> {
                             for (Object object : foo) {
                                 if (object instanceof Employee) {
-                                    this.projectList.add(((Employee) object).getName() + " #" + ((Employee) object).getId());
+                                    this.employeeList.add(((Employee) object).getName() + " #" + ((Employee) object).getId());
                                 }
                             }
                             ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, employeeList);

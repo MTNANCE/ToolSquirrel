@@ -2,6 +2,7 @@ package no.purplecloud.toolsquirrel.network;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
@@ -14,7 +15,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Loan;
@@ -84,6 +87,13 @@ public class VolleySingleton {
                     return null;
                 }
             }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + CacheSingleton.getInstance(context).loadFromCache("token"));
+                return params;
+            }
         };
         addToRequestQueue(stringRequest);
     }
@@ -122,7 +132,14 @@ public class VolleySingleton {
                     }
                     l.onCallback(list);
                 }, System.out::println
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + CacheSingleton.getInstance(context).loadFromCache("token"));
+                return params;
+            }
+        };
         addToRequestQueue(jsonArrayRequest);
     }
 
@@ -171,6 +188,13 @@ public class VolleySingleton {
                     return null;
                 }
             }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + CacheSingleton.getInstance(context).loadFromCache("token"));
+                return params;
+            }
         };
         addToRequestQueue(jsonArrayRequest);
     }
@@ -208,7 +232,14 @@ public class VolleySingleton {
                     }
                     l.onCallback(list);
                 }, System.out::println
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "Bearer " + CacheSingleton.getInstance(context).loadFromCache("token"));
+                return params;
+            }
+        };
         addToRequestQueue(jsonArrayRequest);
     }
 
