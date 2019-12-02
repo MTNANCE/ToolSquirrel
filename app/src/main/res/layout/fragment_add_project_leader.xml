@@ -43,20 +43,12 @@
             android:hint="@string/autocomplete_employee"
             android:id="@+id/add_leader_employee_selector"/>
 
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_below="@id/add_leader_employee_selector"
-            android:hint="@string/autocomplete_project"
-            android:id="@+id/add_leader_project_selector"/>
-
         <Button
             android:layout_width="220dp"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/add_leader_project_selector"
+            android:layout_below="@id/add_leader_employee_selector"
             android:text="Add Project Leader"
             android:textColor="#FFF"
             android:backgroundTint="@color/colorPrimary"

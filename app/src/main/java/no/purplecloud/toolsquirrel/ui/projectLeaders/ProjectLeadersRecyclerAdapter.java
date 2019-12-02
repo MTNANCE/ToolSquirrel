@@ -52,6 +52,7 @@ public class ProjectLeadersRecyclerAdapter extends RecyclerView.Adapter<ProjectL
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        View view;
         ImageView image;
         TextView name;
         TextView position;
@@ -59,6 +60,7 @@ public class ProjectLeadersRecyclerAdapter extends RecyclerView.Adapter<ProjectL
 
         public ViewHolder(@NonNull View view) {
             super(view);
+            this.view = view;
             this.image = view.findViewById(R.id.project_leader_image);
             this.name = view.findViewById(R.id.project_leader_name);
             this.position = view.findViewById(R.id.project_leader_position);

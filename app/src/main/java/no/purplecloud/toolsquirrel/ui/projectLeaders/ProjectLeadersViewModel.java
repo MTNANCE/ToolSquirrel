@@ -21,6 +21,7 @@ import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class ProjectLeadersViewModel extends AndroidViewModel {
 
@@ -46,11 +47,15 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
     }
 
     public void getAllProjectLeaders() {
-        VolleySingleton.getInstance(this.context)
-                .searchGetRequest(Endpoints.URL + "/findProjectLeaders/", String.valueOf(this.selectedProject), "employee", listOfProjectLeaders::setValue);
+        String selectedProjectId = CacheSingleton.getInstance(context).loadFromData("selected_project");
+        if (!selectedProjectId.isEmpty() && selectedProjectId != null) {
+            VolleySingleton.getInstance(this.context)
+                    .searchGetRequest(Endpoints.URL + "/findProjectLeaders/", selectedProjectId, "employee", listOfProjectLeaders::setValue);
+        }
     }
 
-    public void setSelectedProject(Long selectedProject) {
-        this.selectedProject = selectedProject;
+    public void setListOfProjectLeaders(List<Employee> list) {
+        this.listOfProjectLeaders.setValue(list);
     }
+
 }

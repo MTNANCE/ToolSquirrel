@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.squareup.picasso.Picasso;
 
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class ProjectDetailsFragment extends Fragment {
 
@@ -31,11 +32,14 @@ public class ProjectDetailsFragment extends Fragment {
 
     private NavController navController;
 
+    private ProjectViewModel projectViewModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProjectViewModel projectViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectViewModel.class);
+        projectViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectViewModel.class);
         projectViewModel.getSelectedProject().observe(this, project -> {
+            projectViewModel.setSelectedProjectid(project.getProjectId());
             if (!project.getProjectImage().trim().equals("")) {
                 Picasso.get().load(project.getProjectImage()).into(this.image);
             } else {
@@ -65,6 +69,8 @@ public class ProjectDetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.manageBtn.setOnClickListener(event -> {
+            CacheSingleton.getInstance(getContext())
+                    .saveToData("selected_project", String.valueOf(projectViewModel.getSelectedProjectid()));
             // Redirect client to the new project fragment
             navController.navigate(R.id.action_nav_project_details_to_project_leaders);
         });
