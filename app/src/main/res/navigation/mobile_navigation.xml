@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_rent"
-        android:name="no.purplecloud.toolsquirrel.ui.rent.RentFragment"
+        android:name="no.purplecloud.toolsquirrel.ui.borrowing.RentFragment"
         android:label="@string/menu_rent_tool"
         tools:layout="@layout/fragment_rent_tool" />
 
@@ -140,5 +140,11 @@
         android:name="no.purplecloud.toolsquirrel.ui.manageTools.NewToolFragment"
         android:label="@string/add_new_tool"
         tools:layout="@layout/fragment_new_tool" />
+
+    <fragment
+        android:id="@+id/nav_return"
+        android:name="no.purplecloud.toolsquirrel.ui.borrowing.ReturnFragment"
+        android:label="fragment_return_tool"
+        tools:layout="@layout/fragment_return_tool" />
 
 </navigation>
