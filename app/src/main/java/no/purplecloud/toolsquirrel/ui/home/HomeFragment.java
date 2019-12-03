@@ -1,5 +1,6 @@
 package no.purplecloud.toolsquirrel.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import no.purplecloud.toolsquirrel.CredentialsActivity;
+import no.purplecloud.toolsquirrel.MainActivity;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;

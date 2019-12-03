@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.domain.Tool;
 import no.purplecloud.toolsquirrel.domain.ToolStatus;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
