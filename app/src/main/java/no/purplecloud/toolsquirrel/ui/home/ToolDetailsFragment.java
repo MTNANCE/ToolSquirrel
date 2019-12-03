@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
@@ -34,6 +35,7 @@ public class ToolDetailsFragment extends Fragment {
     private ImageView image;
     private TextView title;
     private TextView description;
+    private TextView txtTotalAvailable;
     private TableLayout tableLayout;
 
     @Override
@@ -56,17 +58,26 @@ public class ToolDetailsFragment extends Fragment {
         this.image = result.findViewById(R.id.tool_details_image);
         this.title = result.findViewById(R.id.tool_details_tile);
         this.description = result.findViewById(R.id.tool_details_desc);
+        this.txtTotalAvailable = result.findViewById(R.id.tool_details_availability);
         this.tableLayout = result.findViewById(R.id.tool_availability_table);
         return result;
     }
 
     private void getAllDuplicateTools(String toolName) {
-        VolleySingleton.getInstance(getContext())
-                .searchGetRequest(Endpoints.URL + "/getToolStatus/", toolName, "toolstatus",
-                        this::formatToolAvailabilityTable);
+        try {
+            int projectId = new JSONObject(CacheSingleton.getInstance(getContext()).loadFromData("activeProject")).getInt("id");
+            System.out.println(Endpoints.URL + "/tools/status/".concat(String.valueOf(projectId).concat("/")));
+            VolleySingleton.getInstance(getContext())
+                    .searchGetRequest(Endpoints.URL + "/tools/status/".concat(String.valueOf(projectId).concat("/")), toolName, "toolstatus",
+                            this::formatToolAvailabilityTable);
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
     }
 
     private void formatToolAvailabilityTable(List<ToolStatus> toolStatuses) {
+        AtomicInteger totalAvailable = new AtomicInteger(0);
+
         toolStatuses.forEach(status -> {
             TableRow tr = new TableRow(getContext());
 
@@ -86,6 +97,14 @@ public class ToolDetailsFragment extends Fragment {
             });
 
             tableLayout.addView(tr);
+
+            // Check if the tool is available or not and add it to the counters
+            if (status.isAvailable()) {
+                totalAvailable.set(totalAvailable.get() + 1);
+            }
         });
+
+        String availableText = toolStatuses.size() + " tools, " + totalAvailable.get() + " available";
+        txtTotalAvailable.setText(availableText);
     }
 }
