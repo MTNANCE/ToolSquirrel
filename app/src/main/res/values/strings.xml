@@ -11,6 +11,7 @@
     <!-- Open menu options -->
     <string name="menu_home">Home</string>
     <string name="menu_rent_tool">Rent Tool</string>
+    <string name="menu_return_tool">Return Tool</string>
     <string name="menu_manage_borrowed_tools">My Loans</string>
     <string name="menu_manage_profile">My Profile</string>
     <!-- Admin menu options -->

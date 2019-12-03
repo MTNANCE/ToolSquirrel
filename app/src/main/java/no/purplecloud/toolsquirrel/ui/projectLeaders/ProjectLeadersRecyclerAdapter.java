@@ -42,7 +42,8 @@ public class ProjectLeadersRecyclerAdapter extends RecyclerView.Adapter<ProjectL
         Picasso.get().load(this.listOfProjectLeaders.get(position).getImage()).into(holder.image);
         holder.name.setText(this.listOfProjectLeaders.get(position).getName());
         holder.position.setText(this.listOfProjectLeaders.get(position).getPosition());
-        holder.position.setText(String.valueOf(this.listOfProjectLeaders.get(position).getPhone()));
+        holder.phone.setText(String.valueOf(this.listOfProjectLeaders.get(position).getPhone()));
+        holder.view.setOnClickListener(v -> projectLeadersViewModel.setSelectedLeader(this.listOfProjectLeaders.get(position)));
     }
 
     @Override

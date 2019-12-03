@@ -33,6 +33,7 @@ import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
 import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 import no.purplecloud.toolsquirrel.ui.project.ProjectViewModel;
+import no.purplecloud.toolsquirrel.ui.projectLeaders.ProjectLeadersViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.action_nav_projects_to_project_details));
                 ViewModelProviders.of(this).get(ManageEmployeesViewModel.class).getSelectedEmployee().observe(this, selected ->
                         navController.navigate(R.id.action_nav_manage_project_employees_to_employee_details));
+                ViewModelProviders.of(this).get(ProjectLeadersViewModel.class).getSelectedProjectLeader().observe(this, selected ->
+                        navController.navigate(R.id.action_nav_project_leaders_to_employee_details));
 
                 // Get header view
                 View headerView = navigationView.getHeaderView(0);

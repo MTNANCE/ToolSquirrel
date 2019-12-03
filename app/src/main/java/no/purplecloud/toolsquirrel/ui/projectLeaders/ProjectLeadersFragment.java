@@ -111,6 +111,9 @@ public class ProjectLeadersFragment extends Fragment {
         VolleySingleton.getInstance(getContext())
                 .searchGetRequest(Endpoints.URL + "/findProjectLeaders/",
                         selectedProjectId, "employee",
-                        list -> projectLeadersViewModel.setListOfProjectLeaders(list));
+                        list -> {
+                            System.out.println("LIST: " + list);
+                            projectLeadersViewModel.setListOfProjectLeaders(list);
+                        });
     }
 }
