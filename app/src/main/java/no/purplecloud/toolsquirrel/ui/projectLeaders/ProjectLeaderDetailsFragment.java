@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel.ui.manageEmployees;
+package no.purplecloud.toolsquirrel.ui.projectLeaders;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.squareup.picasso.Picasso;
 
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 
-public class EmployeeDetailsFragment extends Fragment {
+public class ProjectLeaderDetailsFragment extends Fragment {
 
     private ImageView image;
     private TextView employeeName;
@@ -33,8 +33,8 @@ public class EmployeeDetailsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ManageEmployeesViewModel manageEmployeesViewModel = ViewModelProviders.of(this.getActivity()).get(ManageEmployeesViewModel.class);
-        manageEmployeesViewModel.getSelectedEmployee().observe(this, employee -> {
+        ProjectLeadersViewModel projectLeadersViewModel = ViewModelProviders.of(this.getActivity()).get(ProjectLeadersViewModel.class);
+        projectLeadersViewModel.getSelectedProjectLeader().observe(this, employee -> {
             Picasso.get().load(employee.getImage()).into(this.image);
             this.employeeName.setText(employee.getName());
             this.employeePosition.setText(employee.getPosition());
@@ -42,6 +42,7 @@ public class EmployeeDetailsFragment extends Fragment {
             this.employeeEmail.setText(employee.getEmail());
             this.employeePhone.setText(String.valueOf(employee.getPhone()));
             this.employeeNr.setText(String.valueOf(employee.getId()));
+            this.removeEmployeeBtn.setText("Remove leader from this project ");
         });
     }
 
