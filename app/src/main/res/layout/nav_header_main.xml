@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/side_nav_bar">
+    android:background="@drawable/grad">
 
     <ImageView
         android:id="@+id/header_main_image"
@@ -17,10 +17,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_toRightOf="@id/header_main_image"
         android:text="Dudleif Larssen Rompesaft"
-        android:textSize="16dp"
+        android:textSize="20dp"
         android:layout_alignTop="@id/header_main_image"
         android:id="@+id/header_main_name"/>
 

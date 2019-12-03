@@ -36,11 +36,16 @@
             android:id="@+id/manage_employees_border"
             android:layout_below="@id/manage_employees_search"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_height="match_parent"
+        <ScrollView
             android:layout_width="match_parent"
-            android:id="@+id/manage_employees_recycler_view"
-            android:layout_below="@id/manage_employees_border"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/manage_employees_border">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/manage_employees_recycler_view"
+                android:layout_below="@id/manage_employees_border"/>
+        </ScrollView>
 
     </RelativeLayout>
 

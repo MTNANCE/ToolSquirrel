@@ -11,17 +11,17 @@
 
         <item
             android:id="@+id/nav_rent"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_add_black_24dp"
             android:title="@string/menu_rent_tool" />
 
         <item
             android:id="@+id/nav_loans"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_create_new_folder_black_24dp"
             android:title="@string/menu_manage_borrowed_tools" />
 
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="@string/menu_manage_profile" />
     </group>
 
@@ -29,7 +29,7 @@
         <menu>
             <item
                 android:id="@+id/nav_projects"
-                android:icon="@drawable/ic_build_black_24dp"
+                android:icon="@drawable/ic_domain_black_24dp"
                 android:title="@string/menu_manage_projects"/>
         </menu>
     </item>
@@ -38,7 +38,7 @@
         <menu>
             <item
                 android:id="@+id/nav_manage_project_employees"
-                android:icon="@drawable/ic_build_black_24dp"
+                android:icon="@drawable/ic_people_black_24dp"
                 android:title="@string/menu_manage_project_employees"/>
 
             <item
