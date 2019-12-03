@@ -227,6 +227,33 @@ public class CacheSingleton {
         return new JWT(loadFromCache("token")).getClaim("employee").asObject(Employee.class);
     }
 
+    public void removeToken() {
+        FileOutputStream fileOutputStream = null;
+        try {
+            File cacheFile = new File(context.getCacheDir(), cacheFileName);
+            if (!cacheFile.exists()) {
+                cacheFile = new File(context.getCacheDir(), cacheFileName);
+            }
+            fileOutputStream = new FileOutputStream(cacheFile);
+            // Get current data as JSON
+            JSONObject data = getFileContentAsJSON(cacheFileName);
+            if (data.has("token")) {
+                data.remove("token");
+            }
+            fileOutputStream.write(String.valueOf(data).getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     // TODO If time, create a more secure way
 
     // Secure way
