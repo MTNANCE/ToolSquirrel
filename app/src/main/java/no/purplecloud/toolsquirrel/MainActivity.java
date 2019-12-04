@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
 
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
@@ -63,6 +64,58 @@ public class MainActivity extends AppCompatActivity {
                         .setDrawerLayout(drawer)
                         .build();
 
+                // Render navigation menu depending on user profile
+                Menu menu = navigationView.getMenu();
+                // Hide all necessary by default
+                menu.findItem(R.id.nav_admin_group).setVisible(false);
+                menu.findItem(R.id.nav_project_leader_group).setVisible(false);
+                menu.findItem(R.id.nav_rent).setVisible(false);
+                menu.findItem(R.id.nav_return).setVisible(false);
+                menu.findItem(R.id.nav_loans).setVisible(false);
+                // Get user role(s)
+                List<String> roles = CacheSingleton.getInstance(getApplicationContext()).getAuthenticatedUser().getRolesList();
+                if (roles != null) {
+                    for (String role : roles) {
+                        switch (role) {
+
+                            case "employee":
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            case "project_leader":
+                                // Project leader specific
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(true);
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            case "admin":
+                                // Admin specific
+                                menu.findItem(R.id.nav_admin_group).setVisible(true);
+                                // Project leader specific
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(true);
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            default:
+                                // Default
+                                menu.findItem(R.id.nav_admin_group).setVisible(false);
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(false);
+                                menu.findItem(R.id.nav_rent).setVisible(false);
+                                menu.findItem(R.id.nav_return).setVisible(false);
+                                menu.findItem(R.id.nav_loans).setVisible(false);
+                                break;
+                        }
+                    }
+                }
                 NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
                 NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
                 NavigationUI.setupWithNavController(navigationView, navController);
