@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,8 @@ import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class LoginFragment extends Fragment implements LoginListener {
 
-    private TextView txtUsername;
-    private TextView txtPassword;
+    private EditText txtUsername;
+    private EditText txtPassword;
     private TextView txtRegister;
     private Button btnLogin;
 
@@ -124,7 +125,12 @@ public class LoginFragment extends Fragment implements LoginListener {
             if (e.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 btnLogin.performClick();
             }
-
+            if (e.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_DEL) {
+                int length = txtPassword.getText().length();
+                if (!txtPassword.getText().toString().isEmpty() && length > 0) {
+                    txtPassword.getText().delete(length - 1, length);
+                }
+            }
             return true;
         });
 
