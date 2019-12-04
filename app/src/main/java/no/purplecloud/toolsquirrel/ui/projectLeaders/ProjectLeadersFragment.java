@@ -103,4 +103,17 @@ public class ProjectLeadersFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String selectedProjectId = CacheSingleton.getInstance(getContext()).loadFromData("selected_project");
+        VolleySingleton.getInstance(getContext())
+                .searchGetRequest(Endpoints.URL + "/findProjectLeaders/",
+                        selectedProjectId, "employee",
+                        list -> {
+                            System.out.println("LIST: " + list);
+                            projectLeadersViewModel.setListOfProjectLeaders(list);
+                        });
+    }
 }

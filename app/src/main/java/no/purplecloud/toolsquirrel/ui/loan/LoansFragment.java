@@ -82,4 +82,10 @@ public class LoansFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loansViewModel.getListOfLoans();
+    }
 }

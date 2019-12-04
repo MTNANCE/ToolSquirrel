@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_rent"
-        android:name="no.purplecloud.toolsquirrel.ui.rent.RentFragment"
+        android:name="no.purplecloud.toolsquirrel.ui.borrowing.RentFragment"
         android:label="@string/menu_rent_tool"
         tools:layout="@layout/fragment_rent_tool" />
 
@@ -86,6 +86,11 @@
             app:destination="@id/nav_add_project_leader"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_nav_project_leaders_to_employee_details"
+            app:destination="@id/nav_project_leader_details"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
 
     <fragment
@@ -140,5 +145,17 @@
         android:name="no.purplecloud.toolsquirrel.ui.manageTools.NewToolFragment"
         android:label="@string/add_new_tool"
         tools:layout="@layout/fragment_new_tool" />
+
+    <fragment
+        android:id="@+id/nav_return"
+        android:name="no.purplecloud.toolsquirrel.ui.borrowing.ReturnFragment"
+        android:label="@string/menu_return_tool"
+        tools:layout="@layout/fragment_return_tool" />
+
+    <fragment
+        android:id="@+id/nav_project_leader_details"
+        android:name="no.purplecloud.toolsquirrel.ui.projectLeaders.ProjectLeaderDetailsFragment"
+        android:label="@string/employee_details"
+        tools:layout="@layout/fragment_employee_details" />
 
 </navigation>

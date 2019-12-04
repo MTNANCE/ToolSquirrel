@@ -48,7 +48,7 @@
         android:backgroundTint="?attr/actionMenuTextColor"
         android:ems="10"
         android:hint="@string/password_placeholder"
-        android:inputType="textPassword"
+        android:inputType="textWebPassword"
         android:textColor="@android:color/white"
         android:textColorHint="#E6FFFFFF"
         android:textSize="18sp"

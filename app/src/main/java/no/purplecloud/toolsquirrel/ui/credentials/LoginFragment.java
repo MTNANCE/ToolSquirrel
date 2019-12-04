@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,15 +15,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import no.purplecloud.toolsquirrel.APIClient;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.MainActivity;
 import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.listener.LoginListener;
+import no.purplecloud.toolsquirrel.network.VolleySingleton;
+import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 
 public class LoginFragment extends Fragment implements LoginListener {
 
-    private TextView txtUsername;
-    private TextView txtPassword;
+    private EditText txtUsername;
+    private EditText txtPassword;
     private TextView txtRegister;
     private Button btnLogin;
 
@@ -35,7 +49,6 @@ public class LoginFragment extends Fragment implements LoginListener {
         // We use this function so it doesn't create the view before checking if client already
         // is logged in. This prevents the "show view" animation then it switches to the main one if
         // it's not done like this
-
 
     }
 
@@ -69,12 +82,41 @@ public class LoginFragment extends Fragment implements LoginListener {
             String username = txtUsername.getText().toString();
             String password = txtPassword.getText().toString();
 
-            // Disable button while request is ongoing
-            btnLogin.setEnabled(false);
+            try {
+                JSONObject credentials = new JSONObject() {{
+                    put("username", username);
+                    put("password", password);
+                }};
 
-            // Preform login
-            APIClient.getInstance().login(username, password, getContext(), this);
+                StringRequest request = new StringRequest(Request.Method.POST, Endpoints.URL + "/login",
+                        null, foobar -> onLogin(false, "Format or credentials is incorrect")) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return new HashMap<String, String>() {{
+                            put("Content-Type", "application/json");
+                            put("Accept", "application/json");
+                        }};
+                    }
 
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        return credentials.toString().getBytes();
+                    }
+
+                    @Override
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                        CacheSingleton.getInstance(getContext()).saveToCache("token",
+                                response.headers.get("Authorization").split(" ")[1]);
+                        onLogin(true, "Logged in!");
+                        return super.parseNetworkResponse(response);
+                    }
+                };
+
+                VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
+            } catch (Exception foo) {
+                onLogin(false, "Failed to login");
+                foo.printStackTrace();
+            }
         });
 
         txtPassword.setOnKeyListener((view, keyCode, e) -> {
@@ -83,7 +125,12 @@ public class LoginFragment extends Fragment implements LoginListener {
             if (e.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 btnLogin.performClick();
             }
-
+            if (e.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_DEL) {
+                int length = txtPassword.getText().length();
+                if (!txtPassword.getText().toString().isEmpty() && length > 0) {
+                    txtPassword.getText().delete(length - 1, length);
+                }
+            }
             return true;
         });
 
@@ -95,7 +142,6 @@ public class LoginFragment extends Fragment implements LoginListener {
                     .commit();
         });
     }
-
 
 
     public void setRegFragment(RegisterFragment regFragment) {

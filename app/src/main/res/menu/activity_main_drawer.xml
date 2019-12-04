@@ -11,40 +11,51 @@
 
         <item
             android:id="@+id/nav_rent"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_add_black_24dp"
             android:title="@string/menu_rent_tool" />
 
         <item
+            android:id="@+id/nav_return"
+            android:icon="@drawable/ic_keyboard_return_black_24dp"
+            android:title="@string/menu_return_tool" />
+
+        <item
             android:id="@+id/nav_loans"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_create_new_folder_black_24dp"
             android:title="@string/menu_manage_borrowed_tools" />
 
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="@string/menu_manage_profile" />
     </group>
 
-    <item android:title="Admin">
+    <item android:title="Admin"
+        android:id="@+id/nav_admin_group">
         <menu>
-            <item
-                android:id="@+id/nav_projects"
-                android:icon="@drawable/ic_build_black_24dp"
-                android:title="@string/menu_manage_projects"/>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_projects"
+                    android:icon="@drawable/ic_domain_black_24dp"
+                    android:title="@string/menu_manage_projects"/>
+            </group>
         </menu>
     </item>
 
-    <item android:title="Project Leader">
+    <item android:title="Project Leader"
+        android:id="@+id/nav_project_leader_group">
         <menu>
-            <item
-                android:id="@+id/nav_manage_project_employees"
-                android:icon="@drawable/ic_build_black_24dp"
-                android:title="@string/menu_manage_project_employees"/>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_manage_project_employees"
+                    android:icon="@drawable/ic_people_black_24dp"
+                    android:title="@string/menu_manage_project_employees"/>
 
-            <item
-                android:id="@+id/nav_manage_tools"
-                android:icon="@drawable/ic_build_black_24dp"
-                android:title="@string/menu_manage_tools"/>
+                <item
+                    android:id="@+id/nav_manage_tools"
+                    android:icon="@drawable/ic_build_black_24dp"
+                    android:title="@string/menu_manage_tools"/>
+            </group>
         </menu>
     </item>
 

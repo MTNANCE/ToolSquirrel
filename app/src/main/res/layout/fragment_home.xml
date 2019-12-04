@@ -18,11 +18,16 @@
         android:id="@+id/loans_border"
         android:layout_below="@id/home_search"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="match_parent"
+    <ScrollView
         android:layout_width="match_parent"
-        android:id="@+id/home_recycler_view"
-        android:layout_below="@id/home_search"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/loans_border">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/home_recycler_view"
+            android:layout_below="@id/home_search"/>
+    </ScrollView>
 
 </RelativeLayout>
 

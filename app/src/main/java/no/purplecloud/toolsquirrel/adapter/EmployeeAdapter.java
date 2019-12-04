@@ -15,6 +15,8 @@ import java.util.List;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.domain.Project;
 
+// TODO Change this to be used as a adapter for AutoTextInputSuggestion Widget Thingy
+
 public class EmployeeAdapter extends ArrayAdapter<Employee> {
 
     private Context context;

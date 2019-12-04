@@ -27,6 +27,8 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
 
     // Observable list of tools
     private MutableLiveData<List<Employee>> listOfProjectLeaders;
+    // Observable selected project leader
+    private MutableLiveData<Employee> selectedProjectLeader = new MutableLiveData<>();
 
     // We need the selected project to identify which project leaders are assigned to it
     private Long selectedProject;
@@ -36,6 +38,14 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
     public ProjectLeadersViewModel(Application context) {
         super(context);
         this.context = context;
+    }
+
+    public void setSelectedLeader(Employee employee) {
+        this.selectedProjectLeader.setValue(employee);
+    }
+
+    public MutableLiveData<Employee> getSelectedProjectLeader() {
+        return this.selectedProjectLeader;
     }
 
     public LiveData<List<Employee>> getProjectLeaders() {
@@ -48,6 +58,7 @@ public class ProjectLeadersViewModel extends AndroidViewModel {
 
     public void getAllProjectLeaders() {
         String selectedProjectId = CacheSingleton.getInstance(context).loadFromData("selected_project");
+        System.out.println("Selected Project Id: " + selectedProjectId + (" (Request)"));
         if (!selectedProjectId.isEmpty() && selectedProjectId != null) {
             VolleySingleton.getInstance(this.context)
                     .searchGetRequest(Endpoints.URL + "/findProjectLeaders/", selectedProjectId, "employee", listOfProjectLeaders::setValue);

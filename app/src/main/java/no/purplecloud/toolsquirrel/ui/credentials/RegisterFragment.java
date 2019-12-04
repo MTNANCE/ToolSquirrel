@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +21,9 @@ import no.purplecloud.toolsquirrel.R;
 public class RegisterFragment extends Fragment {
     private LoginFragment loginFragment;
 
-    private TextView txtUsername;
-    private TextView txtPassword;
-    private TextView txtCPassword;
+    private EditText txtUsername;
+    private EditText txtPassword;
+    private EditText txtCPassword;
     private TextView txtLogin;
     private Button btnRegister;
 
@@ -64,6 +65,12 @@ public class RegisterFragment extends Fragment {
             // is equal
             if (e.getAction() == KeyEvent.ACTION_DOWN && key == KeyEvent.KEYCODE_ENTER) {
                 btnRegister.performClick();
+            }
+            if (e.getAction() == KeyEvent.ACTION_UP && key == KeyEvent.KEYCODE_DEL) {
+                int length = txtCPassword.getText().length();
+                if (!txtCPassword.getText().toString().isEmpty() && length > 0) {
+                    txtCPassword.getText().delete(length - 1, length);
+                }
             }
             return true;
         });

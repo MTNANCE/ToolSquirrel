@@ -1,9 +1,12 @@
 package no.purplecloud.toolsquirrel;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -22,11 +25,16 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
+
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import no.purplecloud.toolsquirrel.ui.home.HomeViewModel;
 import no.purplecloud.toolsquirrel.ui.manageEmployees.ManageEmployeesViewModel;
 import no.purplecloud.toolsquirrel.ui.project.ProjectViewModel;
+import no.purplecloud.toolsquirrel.ui.projectLeaders.ProjectLeadersViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,40 +43,103 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        File cacheFile = new File(getApplicationContext().getCacheDir(), "cache_file.txt");
+        if (!cacheFile.exists()) {
+            this.startActivity(new Intent(getBaseContext(), CredentialsActivity.class));
+        } else {
+            if (!CacheSingleton.getInstance(getApplicationContext()).getFileContentAsJSON("cache_file.txt").has("token")) {
+                this.startActivity(new Intent(this, CredentialsActivity.class));
+            } else {
+                setContentView(R.layout.activity_main);
 
-        setContentView(R.layout.activity_main);
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                // Passing each menu ID as a set of Ids because each
+                // menu should be considered as top level destinations.
+                mAppBarConfiguration = new AppBarConfiguration.Builder(
+                        R.id.nav_home, R.id.nav_rent, R.id.nav_return, R.id.nav_loans, R.id.nav_profile,
+                        R.id.nav_projects, R.id.nav_manage_project_employees, R.id.nav_manage_tools)
+                        .setDrawerLayout(drawer)
+                        .build();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_rent, R.id.nav_loans, R.id.nav_profile,
-                R.id.nav_projects, R.id.nav_manage_project_employees, R.id.nav_manage_tools)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-        // Set navigation actions
-        ViewModelProviders.of(this).get(HomeViewModel.class).getSelectedTool().observe(this, selected ->
-                navController.navigate(R.id.action_nav_home_to_tool_details));
-        ViewModelProviders.of(this).get(ProjectViewModel.class).getSelectedProject().observe(this, selected ->
-                navController.navigate(R.id.action_nav_projects_to_project_details));
-        ViewModelProviders.of(this).get(ManageEmployeesViewModel.class).getSelectedEmployee().observe(this, selected ->
-                navController.navigate(R.id.action_nav_manage_project_employees_to_employee_details));
+                // Render navigation menu depending on user profile
+                Menu menu = navigationView.getMenu();
+                // Hide all necessary by default
+                menu.findItem(R.id.nav_admin_group).setVisible(false);
+                menu.findItem(R.id.nav_project_leader_group).setVisible(false);
+                menu.findItem(R.id.nav_rent).setVisible(false);
+                menu.findItem(R.id.nav_return).setVisible(false);
+                menu.findItem(R.id.nav_loans).setVisible(false);
+                // Get user role(s)
+                List<String> roles = CacheSingleton.getInstance(getApplicationContext()).getAuthenticatedUser().getRolesList();
+                if (roles != null) {
+                    for (String role : roles) {
+                        switch (role) {
 
-        // Get header view
-        View headerView = navigationView.getHeaderView(0);
-        TextView authenticatedUserName = headerView.findViewById(R.id.header_main_name);
-        ImageView authenticatedUserImage = headerView.findViewById(R.id.header_main_image);
-        // Get authenticated user
-        Employee authenticatedUser = CacheSingleton.getInstance(getApplicationContext()).getAuthenticatedUser();
-        // Set the header values
-        authenticatedUserName.setText(authenticatedUser.getName());
-        Picasso.get().load(authenticatedUser.getImage()).into(authenticatedUserImage);
+                            case "employee":
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            case "project_leader":
+                                // Project leader specific
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(true);
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            case "admin":
+                                // Admin specific
+                                menu.findItem(R.id.nav_admin_group).setVisible(true);
+                                // Project leader specific
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(true);
+                                // Employee specific
+                                menu.findItem(R.id.nav_rent).setVisible(true);
+                                menu.findItem(R.id.nav_return).setVisible(true);
+                                menu.findItem(R.id.nav_loans).setVisible(true);
+                                break;
+
+                            default:
+                                // Default
+                                menu.findItem(R.id.nav_admin_group).setVisible(false);
+                                menu.findItem(R.id.nav_project_leader_group).setVisible(false);
+                                menu.findItem(R.id.nav_rent).setVisible(false);
+                                menu.findItem(R.id.nav_return).setVisible(false);
+                                menu.findItem(R.id.nav_loans).setVisible(false);
+                                break;
+                        }
+                    }
+                }
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+                NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+                NavigationUI.setupWithNavController(navigationView, navController);
+                // Set navigation actions
+                ViewModelProviders.of(this).get(HomeViewModel.class).getSelectedTool().observe(this, selected ->
+                        navController.navigate(R.id.action_nav_home_to_tool_details));
+                ViewModelProviders.of(this).get(ProjectViewModel.class).getSelectedProject().observe(this, selected ->
+                        navController.navigate(R.id.action_nav_projects_to_project_details));
+                ViewModelProviders.of(this).get(ManageEmployeesViewModel.class).getSelectedEmployee().observe(this, selected ->
+                        navController.navigate(R.id.action_nav_manage_project_employees_to_employee_details));
+                ViewModelProviders.of(this).get(ProjectLeadersViewModel.class).getSelectedProjectLeader().observe(this, selected ->
+                        navController.navigate(R.id.action_nav_project_leaders_to_employee_details));
+
+                // Get header view
+                View headerView = navigationView.getHeaderView(0);
+                TextView authenticatedUserName = headerView.findViewById(R.id.header_main_name);
+                ImageView authenticatedUserImage = headerView.findViewById(R.id.header_main_image);
+                // Get authenticated user
+                Employee authenticatedUser = CacheSingleton.getInstance(getApplicationContext()).getAuthenticatedUser();
+                // Set the header values
+                authenticatedUserName.setText(authenticatedUser.getName());
+                Picasso.get().load(authenticatedUser.getImage()).into(authenticatedUserImage);
+            }
+        }
     }
 
     @Override
@@ -83,6 +154,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                CacheSingleton.getInstance(getApplicationContext()).removeToken();
+                startActivity(new Intent(this, CredentialsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

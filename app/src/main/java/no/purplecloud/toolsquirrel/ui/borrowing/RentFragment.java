@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel.ui.rent;
+package no.purplecloud.toolsquirrel.ui.borrowing;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +20,6 @@ import no.purplecloud.toolsquirrel.R;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.network.VolleySingleton;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
-import okhttp3.Cache;
 
 public class RentFragment extends Fragment {
 
@@ -33,7 +32,6 @@ public class RentFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_rent_tool, container, false);
         this.input = root.findViewById(R.id.rent_tool_input);
         this.button = root.findViewById(R.id.rent_tool_button);
-        // TODO Add other ref here
         return root;
     }
 
