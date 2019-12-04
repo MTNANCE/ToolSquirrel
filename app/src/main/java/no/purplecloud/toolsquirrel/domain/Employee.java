@@ -1,10 +1,8 @@
 package no.purplecloud.toolsquirrel.domain;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +40,7 @@ public class Employee {
         if (jsonObject.has("image")) {
             this.image = jsonObject.getString("image");
         }
+        /*
         JSONArray rolesArr = jsonObject.getJSONArray("rolesList");
         for (int i = 0; i < rolesArr.length(); i++) {
             this.rolesList.add(rolesArr.getString(i));
@@ -49,7 +48,7 @@ public class Employee {
         JSONArray permissionArr = jsonObject.getJSONArray("permissionsList");
         for (int i = 0; i < permissionArr.length(); i++) {
             this.permissionsList.add(permissionArr.getString(i));
-        }
+        }*/
     }
 
 }

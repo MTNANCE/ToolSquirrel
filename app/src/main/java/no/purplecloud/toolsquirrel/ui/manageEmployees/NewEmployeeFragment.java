@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,23 +47,6 @@ public class NewEmployeeFragment extends Fragment {
         this.autoCompleteProject = rootView.findViewById(R.id.add_employee_project_selector);
         this.status = rootView.findViewById(R.id.add_employee_status);
         this.submitBtn = rootView.findViewById(R.id.add_employee_button);
-
-        // Setup Employee AutoComplete
-        VolleySingleton.getInstance(getContext())
-                .getListRequest(Endpoints.URL + "/employees", "employee",
-                        foo -> {
-                            for (Object object : foo) {
-                                if (object instanceof Employee) {
-                                    this.employeeList.add(((Employee) object).getName() + " #" + ((Employee) object).getId());
-                                }
-                            }
-                            ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, employeeList);
-                            // Define the threshold point where it is going to start searching
-                            this.autoCompleteEmployee.setThreshold(1);
-                            // Attach adapter
-                            this.autoCompleteEmployee.setAdapter(employeeAdapter);
-                        }
-                );
         // Setup Project AutoComplete
         Long employee_id = CacheSingleton.getInstance(getContext()).getAuthenticatedUser().getId();
         VolleySingleton.getInstance(getContext())
@@ -85,6 +66,26 @@ public class NewEmployeeFragment extends Fragment {
         return rootView;
     }
 
+    public void getAllEmployeesNotInProject() {
+        long projectId = Long.valueOf(selectedProject.split("#")[1]);
+        // Setup Employee AutoComplete
+        VolleySingleton.getInstance(getContext())
+                .getListRequest(Endpoints.URL + "/employees/project/nonmembers/".concat(String.valueOf(projectId)), "employee",
+                        foo -> {
+                            for (Object object : foo) {
+                                if (object instanceof Employee) {
+                                    this.employeeList.add(((Employee) object).getName() + " #" + ((Employee) object).getId());
+                                }
+                            }
+                            ArrayAdapter<String> employeeAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, employeeList);
+                            // Define the threshold point where it is going to start searching
+                            this.autoCompleteEmployee.setThreshold(1);
+                            // Attach adapter
+                            this.autoCompleteEmployee.setAdapter(employeeAdapter);
+                        }
+                );
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -94,6 +95,7 @@ public class NewEmployeeFragment extends Fragment {
         });
         this.autoCompleteProject.setOnItemClickListener(((adapterView, view, i, l) -> {
             this.selectedProject = adapterView.getItemAtPosition(i).toString();
+            getAllEmployeesNotInProject();
             System.out.println("Selected Project: " + this.selectedProject);
         }));
 
