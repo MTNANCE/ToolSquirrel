@@ -13,21 +13,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
+import no.purplecloud.toolsquirrel.RetroFitApi;
 import no.purplecloud.toolsquirrel.domain.Employee;
-import no.purplecloud.toolsquirrel.network.VolleySingleton;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class NewProjectFragment extends Fragment {
 
@@ -38,6 +47,9 @@ public class NewProjectFragment extends Fragment {
     private Button submitBtn;
     private Button uploadImageBtn;
     private ImageView uploadedImg;
+
+    private String imgName;
+    private String imgType;
 
     @Nullable
     @Override
@@ -94,35 +106,52 @@ public class NewProjectFragment extends Fragment {
             return;
         }
 
-        // Get image as bitmap
-        Bitmap bitmap = ((BitmapDrawable) uploadedImg.getDrawable()).getBitmap();
-
-        // Create an output stream and feed it the content of the image
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-        // Get the content as bytes (will be used to send to API)
-        byte[] imgBytes = baos.toByteArray();
-
         try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("name", name);
-            jsonObject.put("desc", desc);
-            jsonObject.put("location", location);
-            jsonObject.put("image", imgBytes);
-            Employee authenticatedEmployee = CacheSingleton.getInstance(getContext()).getAuthenticatedUser();
-            jsonObject.put("employee_id", authenticatedEmployee.getId());
+            // Get image as bitmap
+            Bitmap bitmap = ((BitmapDrawable) uploadedImg.getDrawable()).getBitmap();
+            File imgFile = File.createTempFile(imgName, ".".concat(imgType), getContext().getCacheDir());
 
-            VolleySingleton.getInstance(getContext()).postRequest(Endpoints.URL + "/addNewProject", jsonObject,
-                    response -> {
-                        this.projectStatus.setText("Project creation success!");
-                        this.projectStatus.setTextColor(Color.parseColor("#1fa139"));
-                    }, error -> {
-                        this.projectStatus.setText("Project creation failed.");
-                        this.projectStatus.setTextColor(Color.parseColor("#e01919"));
-                    }
-            );
-        } catch (JSONException e) {
+            // Create an output stream and feed it the content of the image
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(imgFile));
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+
+            // Get the logged in employee
+            Employee authenticatedEmployee = CacheSingleton.getInstance(getContext()).getAuthenticatedUser();
+
+            // Create an API client from Retrofit
+            // TODO move this class to a singleton
+            Retrofit rf = new Retrofit.Builder().baseUrl(Endpoints.URL).addConverterFactory(ScalarsConverterFactory.create()).build();
+            RetroFitApi api = rf.create(RetroFitApi.class);
+
+            // Create the body for the request
+            RequestBody namePart = RequestBody.create(MediaType.parse("text/plain"), name);
+            RequestBody descPart = RequestBody.create(MediaType.parse("text/plain"), desc);
+            RequestBody locPart = RequestBody.create(MediaType.parse("text/plain"), location);
+            RequestBody employeeIdPart = RequestBody.create(MediaType.parse("text/plain"), authenticatedEmployee.getId().toString());
+
+            // Get image
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imgFile);
+            MultipartBody.Part imgBody = MultipartBody.Part.createFormData("image", imgFile.getName(), requestFile);
+
+            // Define
+            Call<String> call = api.createPost(namePart, descPart, locPart, employeeIdPart, imgBody);
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "Project added!", Toast.LENGTH_SHORT).show();
+                        getActivity().onBackPressed();
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -135,6 +164,8 @@ public class NewProjectFragment extends Fragment {
         if (data != null) {
             if (resultCode == Activity.RESULT_OK) {
                 uploadedImg.setImageURI(data.getData());
+                imgName = data.getData().getPathSegments().get(6);
+                imgType = data.getData().getPathSegments().get(5).split("/")[1];
             }
         }
     }
