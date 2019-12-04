@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import no.purplecloud.toolsquirrel.R;
@@ -32,6 +34,7 @@ public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        viewHolder.toolId.setText("#" + this.listOfLoans.get(position).getToolId());
         viewHolder.toolTitle.setText(this.listOfLoans.get(position).getToolName());
         viewHolder.dueDate.setText(this.listOfLoans.get(position).getDueDate());
     }
@@ -47,6 +50,7 @@ public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View view;
+        TextView toolId;
         TextView toolTitle;
         TextView dueDate;
         Button extendBtn;
@@ -54,6 +58,7 @@ public class LoanListRecyclerViewAdapter extends RecyclerView.Adapter<LoanListRe
         public ViewHolder(@NonNull View view) {
             super(view);
             this.view = view;
+            this.toolId = view.findViewById(R.id.loan_item_tool_id);
             this.toolTitle = view.findViewById(R.id.loan_item_title);
             this.dueDate = view.findViewById(R.id.loan_item_due_date);
             this.extendBtn = view.findViewById(R.id.loan_item_button);

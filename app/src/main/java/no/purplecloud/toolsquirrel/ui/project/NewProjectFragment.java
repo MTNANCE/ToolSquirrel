@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 import no.purplecloud.toolsquirrel.Endpoints;
 import no.purplecloud.toolsquirrel.R;
-import no.purplecloud.toolsquirrel.RetroFitApi;
+import no.purplecloud.toolsquirrel.network.RetroFitApi;
 import no.purplecloud.toolsquirrel.domain.Employee;
 import no.purplecloud.toolsquirrel.singleton.CacheSingleton;
 import okhttp3.MediaType;

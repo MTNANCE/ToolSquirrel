@@ -1,4 +1,4 @@
-package no.purplecloud.toolsquirrel;
+package no.purplecloud.toolsquirrel.network;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

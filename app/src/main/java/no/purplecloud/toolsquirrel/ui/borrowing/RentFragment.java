@@ -52,7 +52,7 @@ public class RentFragment extends Fragment {
                             response -> {
                                 Toast.makeText(getContext(), "Loan success", Toast.LENGTH_LONG).show();
                             }, error -> {
-                                Toast.makeText(getContext(), "Something went wrong..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), new String(error.networkResponse.data), Toast.LENGTH_LONG).show();
                             }
                     );
                 } catch (JSONException e) {
