@@ -30,7 +30,8 @@
             android:title="@string/menu_manage_profile" />
     </group>
 
-    <item android:title="Admin">
+    <item android:title="Admin"
+        android:id="@+id/nav_admin_group">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -41,7 +42,8 @@
         </menu>
     </item>
 
-    <item android:title="Project Leader">
+    <item android:title="Project Leader"
+        android:id="@+id/nav_project_leader_group">
         <menu>
             <group android:checkableBehavior="single">
                 <item
