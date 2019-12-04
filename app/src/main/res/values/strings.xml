@@ -31,9 +31,11 @@
 
     <!-- AUTHENTICATION -->
     <string name="username_placeholder">Username</string>
+    <string name="name_placeholder">Name</string>
     <string name="password_placeholder">Password</string>
     <string name="cpassword_placeholder">Confirm Password</string>
     <string name="email_placeholder">E-mail</string>
+    <string name="phone_placeholder">Phone Number</string>
     <string name="login_btn">Login</string>
     <string name="register_btn">Register</string>
     <string name="login_no_account"><u>Don\'t have an account?</u></string>

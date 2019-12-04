@@ -128,7 +128,7 @@ public class NewProjectFragment extends Fragment {
             RequestBody namePart = RequestBody.create(MediaType.parse("text/plain"), name);
             RequestBody descPart = RequestBody.create(MediaType.parse("text/plain"), desc);
             RequestBody locPart = RequestBody.create(MediaType.parse("text/plain"), location);
-            RequestBody employeeIdPart = RequestBody.create(MediaType.parse("text/plain"), authenticatedEmployee.getId().toString());
+            RequestBody employeeIdPart = RequestBody.create(MediaType.parse("text/pl ain"), authenticatedEmployee.getId().toString());
 
             // Get image
             RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), imgFile);
