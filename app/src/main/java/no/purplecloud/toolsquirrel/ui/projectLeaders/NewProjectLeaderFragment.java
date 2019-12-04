@@ -53,9 +53,11 @@ public class NewProjectLeaderFragment extends Fragment {
         this.status = rootView.findViewById(R.id.add_leader_status);
         this.submitBtn = rootView.findViewById(R.id.add_leader_button);
 
+        // Get selected project
+        String selectedProjectId = CacheSingleton.getInstance(getContext()).loadFromData("selected_project");
         // Setup Employee AutoComplete
         VolleySingleton.getInstance(getContext())
-                .getListRequest(Endpoints.URL + "/employees", "employee",
+                .getListRequest(Endpoints.URL + "/employees/notProjectLeaders/" + selectedProjectId, "employee",
                         foo -> {
                             for (Object object : foo) {
                                 if (object instanceof Employee) {

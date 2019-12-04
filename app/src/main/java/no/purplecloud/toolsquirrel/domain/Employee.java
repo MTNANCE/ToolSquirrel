@@ -40,14 +40,21 @@ public class Employee {
         if (jsonObject.has("image")) {
             this.image = jsonObject.getString("image");
         }
-        /*
-        JSONArray rolesArr = jsonObject.getJSONArray("rolesList");
-        for (int i = 0; i < rolesArr.length(); i++) {
-            this.rolesList.add(rolesArr.getString(i));
+        /*if (jsonObject.has("rolesList")) {
+            JSONArray rolesArr = jsonObject.getJSONArray("rolesList");
+            if (rolesArr.length() > 0 && rolesArr != null) {
+                for (int i = 0; i < rolesArr.length(); i++) {
+                    this.rolesList.add(rolesArr.getString(i));
+                }
+            }
         }
-        JSONArray permissionArr = jsonObject.getJSONArray("permissionsList");
-        for (int i = 0; i < permissionArr.length(); i++) {
-            this.permissionsList.add(permissionArr.getString(i));
+        if (jsonObject.has("permissionsList")) {
+            JSONArray permissionArr = jsonObject.getJSONArray("permissionsList");
+            if (permissionArr.length() > 0 && permissionArr != null) {
+                for (int i = 0; i < permissionArr.length(); i++) {
+                    this.permissionsList.add(permissionArr.getString(i));
+                }
+            }
         }*/
     }
 
